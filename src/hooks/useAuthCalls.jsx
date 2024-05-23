@@ -41,7 +41,7 @@ const useAuthCalls = () => {
     try {
       const { data } = await axiosPublic.post("/users/", userData);
       dispatch(registerSuccess(data));
-      navigate("/about");
+      navigate("/");
     } catch (error) {
       dispatch(fetchFail());
     }
@@ -66,9 +66,8 @@ const useAuthCalls = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get("/users/");
-      console.log(data);
-      dispatch(getUserSuccess(data));
       // console.log(data);
+      dispatch(getUserSuccess(data));
     } catch (error) {
       dispatch(fetchFail());
     }

@@ -1,3 +1,4 @@
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -5,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import Box from "@mui/material/Box";
 import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import useAuthCalls from "../hooks/useAuthCalls";
 import logo from "../assets/logo.png";
 import LoginForm, { loginSchema } from "../components/auth/LoginForm";
@@ -12,10 +14,28 @@ import { Button } from "@mui/material";
 import { accountQuestionStyle } from "../styles/globalStyles";
 
 const Login = ({ setToggle }) => {
-  const { login } = useAuthCalls(); //* login fonksiyonu oluşturduğumuz custom hooktan destr ettik
+  const { login } = useAuthCalls();
+  const navigate = useNavigate();
+
   const handleRegister = () => {
     setToggle(true);
   };
+
+  //? async-await kullnılmaz ise dashboard a yönlendirme yapar
+  const handleLogin = async (values, actions) => {
+    await login(values);
+    actions.resetForm();
+    actions.setSubmitting(false);
+
+    const lastClickedBlogId = sessionStorage.getItem("lastClickedBlogId");
+    if (lastClickedBlogId) {
+      navigate(`/detail/${lastClickedBlogId}`);
+      sessionStorage.removeItem("lastClickedBlogId");
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <Grid
@@ -86,11 +106,7 @@ const Login = ({ setToggle }) => {
               password: "",
             }}
             validationSchema={loginSchema}
-            onSubmit={(values, actions) => {
-              login(values);
-              actions.resetForm();
-              actions.setSubmitting(false);
-            }}
+            onSubmit={handleLogin}
             component={(props) => <LoginForm {...props} />}
           ></Formik>
 

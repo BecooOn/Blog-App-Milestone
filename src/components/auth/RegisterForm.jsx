@@ -1,9 +1,14 @@
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Form } from "formik";
 import { object, string } from "yup";
 import { btnStyle } from "../../styles/globalStyles";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export const registerSchema = object({
   username: string()
@@ -36,6 +41,11 @@ const RegisterForm = ({
   touched,
   handleBlur,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Form>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -64,18 +74,6 @@ const RegisterForm = ({
           helperText={touched.firstName && errors.firstName}
         />
         <TextField
-          label="Last Name *"
-          name="lastName"
-          id="lastName"
-          type="text"
-          variant="outlined"
-          value={values.lastName}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.lastName && Boolean(errors.lastName)}
-          helperText={touched.lastName && errors.lastName}
-        />
-        <TextField
           label="Email *"
           name="email"
           id="email"
@@ -86,6 +84,15 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.email && Boolean(errors.email)}
           helperText={touched.email && errors.email}
+        />
+        <TextField
+          label="City"
+          name="city"
+          id="city"
+          type="text"
+          variant="outlined"
+          value={values.city}
+          onChange={handleChange}
         />
         <TextField
           label="Image"
@@ -109,13 +116,22 @@ const RegisterForm = ({
           label="password *"
           name="password"
           id="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           variant="outlined"
           value={values.password}
           onChange={handleChange}
           onBlur={handleBlur}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClickShowPassword} edge="end">
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <Button type="submit" variant="contained" size="large" sx={btnStyle}>
           Submit

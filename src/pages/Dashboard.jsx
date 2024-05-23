@@ -5,8 +5,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,7 +14,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import useBlogCalls from "../hooks/useBlogCalls";
-import Login from "./Login";
 import { btnStyle } from "../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
 
@@ -24,14 +21,26 @@ export default function Dashboard({ setToggle }) {
   const { username, email, firstName, lastName, image, city, bio } =
     useSelector((state) => state.auth);
   const { getBlogs } = useBlogCalls();
-  // console.log(getBlogs);
+  // console.log(username);
   const { blogs } = useSelector((state) => state.blog);
-  // console.log("blogs:", blogs);
+  // console.log(blogs);
+  // console.log("blogs:", blogs[0].likes.length);
   const navigate = useNavigate();
 
   React.useEffect(() => {
     getBlogs("blogs");
+    // getBlogs("users");
   }, []);
+
+  const handleReadMore = (_id) => {
+    if (username) {
+      navigate(`detail/${_id}`);
+    } else {
+      sessionStorage.setItem("lastClickedBlogId", _id);
+      setToggle(false);
+      navigate("/auth");
+    }
+  };
 
   return (
     <Grid
@@ -47,10 +56,10 @@ export default function Dashboard({ setToggle }) {
         <Grid
           item
           xs={12}
-          sm={8}
+          sm={9}
           order={{ xs: 2, sm: 1 }}
           sx={{
-            border: "2px solid gray",
+            border: "1px solid gray",
             p: 3,
             height: "800px",
             overflowY: "scroll",
@@ -67,6 +76,7 @@ export default function Dashboard({ setToggle }) {
             {blogs.map((item) => (
               <>
                 <ListItem
+                  key={item._id}
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
@@ -87,16 +97,35 @@ export default function Dashboard({ setToggle }) {
                             {item.content.slice(0, 80)}...
                           </Typography>
                         </Box>
-                        <Button>Read More</Button>
-                        <Box>
-                          <>
-                            "id ye göre ternary ile" (<FavoriteBorderIcon />
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleReadMore(item._id)}
+                        >
+                          Read More
+                        </Button>
+                        <Box
+                          sx={{
+                            // border: "4px solid red",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "flex-end",
+                            gap: 3,
+                            my: 2,
+                          }}
+                        >
+                          <Box>
+                            <VisibilityIcon />
+                            {item.countOfVisitors.length}
+                          </Box>
+                          <Box>
+                            <CommentIcon />
+                            {item.comments.length}
+                          </Box>
+                          <Box>
+                            (<FavoriteBorderIcon />
+                            {item.likes.length}
                             <FavoriteIcon sx={{ color: "red" }} />)
-                          </>
-                          <CommentIcon />
-                          {item.comments.length}
-                          <VisibilityIcon />
-                          {item.countOfVisitors.length}
+                          </Box>
                         </Box>
                       </Box>
                     }
@@ -107,28 +136,41 @@ export default function Dashboard({ setToggle }) {
             ))}
           </List>
         </Grid>
-        <Grid item xs={12} sm={4} order={{ xs: 1, sm: 2 }}>
+        <Grid item xs={12} sm={3} order={{ xs: 1, sm: 2 }}>
           {username ? (
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="Avatar" src={image} />
-              </ListItemAvatar>
+            <ListItem sx={{ display: "block" }}>
+              <Box sx={{ textAlign: "center" }}>
+                <img
+                  alt={username}
+                  src={image}
+                  style={{ width: "70px", height: "70px", borderRadius: "50%" }}
+                />
+              </Box>
               <ListItemText
-                primary={`Welcome ${firstName} ${lastName}`}
+                primary={`Welcome ${username}`}
                 secondary={
                   <>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {`${email}`}
-                    </Typography>
                     <Box>
-                      <p>City:{city}</p>
-                      <p>email:{email}</p>
-                      <p>Bio:{bio}</p>
+                      <Typography>{`${firstName} ${lastName}`}</Typography>
+                      <Typography>{`${email}`}</Typography>
+                      <Typography>
+                        <Typography
+                          component="span"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          City:
+                        </Typography>
+                        {city}
+                      </Typography>
+                      <Typography>
+                        <Typography
+                          component="span"
+                          sx={{ fontWeight: "bold" }}
+                        >
+                          Bio:
+                        </Typography>
+                        {bio}
+                      </Typography>
                     </Box>
                   </>
                 }

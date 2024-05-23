@@ -93,6 +93,7 @@ const Register = ({ setToggle }) => {
               image: "",
               bio: "",
               password: "",
+              city: "",
             }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {

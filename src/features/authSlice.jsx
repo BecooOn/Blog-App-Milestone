@@ -28,6 +28,12 @@ const authSlice = createSlice({
       state.loading = false;
       state.username = payload.user.username;
       state.email = payload.user.email;
+      state.firstName = payload.user.firstName;
+      state.lastName = payload.user.lastName;
+      state.image = payload.user.image;
+      state.city = payload.user.city;
+      state.bio = payload.user.bio;
+      state._id = payload.user._id;
       state.token = payload.token;
       state.error = false;
     },
@@ -35,17 +41,24 @@ const authSlice = createSlice({
       //! register fullfilled için
       state.loading = false;
       state.username = payload.data.username;
+      state.email = payload.data.email;
+      state.firstName = payload.data.firstName;
+      state.lastName = payload.data.lastName;
+      state.image = payload.data.image;
+      state.city = payload.data.city;
+      state.bio = payload.data.bio;
+      state._id = payload.data._id;
       state.token = payload.token;
       state.error = false;
     },
     getUserSuccess: (state, { payload }) => {
       state.loading = false;
-      state.username = payload.data[0].username;
-      state.firstName = payload.data[0].firstName;
-      state.lastName = payload.data[0].lastName;
-      state.email = payload.data[0].email;
-      state.password = payload.data[0].password;
-      state._id = payload.data[0]._id;
+      state.username = payload.data.username;
+      state.firstName = payload.data.firstName;
+      state.lastName = payload.data.lastName;
+      state.email = payload.data.email;
+      state.password = payload.data.password;
+      state._id = payload.data._id;
       state.error = false;
     },
 

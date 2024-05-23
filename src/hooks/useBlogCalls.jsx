@@ -5,7 +5,7 @@ import useAxios from "./useAxios";
 import {
   fetchStart,
   getBlogSuccess,
-  promiseAllDatasSuccess,
+  promiseAllBlogsSuccess,
   fetchFail,
 } from "../features/blogSlice";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
@@ -73,22 +73,25 @@ const useBlogCalls = () => {
   };
 
   //!-------------Promise.all ile verileri senkronize olarak çağırmak için------------
-  const promiseAllDatas = async () => {
+  const promiseAllBlogs = async () => {
     dispatch(fetchStart());
     try {
-      const [blog, category, comment] = await Promise.all([
+      const [blog, category, comment, user] = await Promise.all([
         axiosToken("/blogs"),
         axiosToken("/categories"),
         axiosToken("/comments"),
+        axiosToken("/users"),
       ]);
       const blogs = blog?.data?.data;
       const categories = category?.data?.data;
       const comments = comment?.data?.data;
+      const users = user?.data?.data;
       dispatch(
-        promiseAllDatasSuccess({
+        promiseAllBlogsSuccess({
           blogs,
           categories,
           comments,
+          users,
         })
       );
     } catch (error) {
@@ -96,7 +99,7 @@ const useBlogCalls = () => {
     }
   };
 
-  return { getBlogs, deleteBlog, createBlog, updateBlog, promiseAllDatas };
+  return { getBlogs, deleteBlog, createBlog, updateBlog, promiseAllBlogs };
 };
 
 export default useBlogCalls;

@@ -11,7 +11,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
@@ -24,11 +23,16 @@ const loginSet = ["Login"];
 function Navbar({ setToggle }) {
   const { username } = useSelector((state) => state.auth);
   // console.log(username);
-  const { logout } = useAuthCalls();
+  // console.log(image);
+  const { logout, getUser } = useAuthCalls();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    getUser();
+  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -161,11 +165,9 @@ function Navbar({ setToggle }) {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
+              <Tooltip title={`${username} open settings`}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar>
-                    {username && username.slice(0, 1).toUpperCase()}
-                  </Avatar>
+                  <Avatar>{username && username.slice(0,1).toUpperCase()}</Avatar>
                 </IconButton>
               </Tooltip>
               <Menu
