@@ -50,7 +50,7 @@ function Navbar({ setToggle }) {
   };
 
   const handlePage = (page) => {
-    console.log(page);
+    // console.log(page);
     if (page.toLowerCase() === "home") {
       navigate("/");
     } else if (page.toLowerCase() === "about") {

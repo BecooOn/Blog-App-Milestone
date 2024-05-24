@@ -1,33 +1,189 @@
-import React, { useEffect } from "react";
-import useAuthCalls from "../hooks/useAuthCalls";
+import React, { useEffect, useState } from "react";
 import useBlogCalls from "../hooks/useBlogCalls";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Box from "@mui/material/Box";
+import {
+  Avatar,
+  Typography,
+  IconButton,
+  Button,
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import CommentIcon from "@mui/icons-material/Comment";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { btnStyle, expandIcons } from "../styles/globalStyles";
+import CommentForm from "../components/blog/CommentForm";
 
 const Detail = () => {
-  const { getUser } = useAuthCalls();
-  const { promiseAllBlogs } = useBlogCalls();
+  const { promiseAllBlogs, getSingleBlogs, deleteBlog } = useBlogCalls();
+  const { id } = useParams();
 
-  const { username, email, firstName, lastName, image, _id } = useSelector(
-    (state) => state.auth
-  );
-  console.log(_id);
-  const { blogs, categories, comments, users } = useSelector(
+  const { blogs, categories, comments, users, singleBlog } = useSelector(
     (state) => state.blog
   );
-  console.log(users);
-  console.log(blogs);
-  console.log(comments);
-  console.log(categories);
+  // console.log(singleBlog?.userId?._id);
+  // console.log(users[0]?._id);
+  // console.log(singleBlog);
+  // console.log(users);
+
+  const authorizedAuthor = singleBlog?.userId?._id === users[0]?._id;
+  // console.log(authorizedAuthor);
+  const [expanded, setExpanded] = useState(false);
+  const [openComments, setOpenComments] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    // getUser();
-    // promiseAllBlogs();
+    getSingleBlogs(id);
+    promiseAllBlogs();
   }, []);
 
-  return <div>Detail</div>;
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const handleComments = () => {
+    setOpenComments(!openComments);
+  };
+  const handleUpdateBlog = () => {
+    return;
+  };
+  const handleDeleteBlog = () => {
+        deleteBlog("blog", id);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        border: "2px solid red",
+        p: 2,
+        flexDirection: "column",
+      }}
+    >
+      <Box
+        sx={{
+          textAlign: "center",
+          maxWidth: "600px",
+        }}
+      >
+        <Box
+          component="img"
+          src={`${singleBlog?.image}`}
+          alt="img"
+          sx={{
+            width: "100%",
+            borderRadius: "10px",
+            transition: "transform 0.3s ease-in-out",
+            "&:hover": {
+              // cursor: "pointer",
+              transform: "scale(1.05)",
+            },
+          }}
+        />
+        <Box>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 3, p: 1 }}>
+            <Avatar>
+              {singleBlog?.userId?.username.slice(0, 1).toUpperCase()}
+            </Avatar>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography component="span" sx={{ fontSize: "14px" }}>
+                {singleBlog?.userId?.username}
+              </Typography>
+              <Typography component="span" sx={{ fontSize: "14px" }}>
+                {new Date(singleBlog?.createdAt).toLocaleString("tr-TR")}
+              </Typography>
+            </Box>
+          </Box>
+          <Typography variant="h5" sx={{ textAlign: "center", my: 2 }}>
+            {singleBlog?.title}
+          </Typography>
+          <Box
+            sx={{
+              textAlign: "center",
+              my: 2,
+              position: "relative",
+              // cursor: "pointer",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              WebkitLineClamp: expanded ? "none" : 3,
+              maxHeight: expanded ? "none" : "5rem",
+            }}
+          >
+            <Typography
+              component="div"
+              sx={{ display: "block", textAlign: "justify" }}
+            >
+              {singleBlog?.content}
+            </Typography>
+            <IconButton
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+              }}
+            >
+              {expanded ? (
+                <ExpandLessIcon sx={expandIcons} onClick={handleExpandClick} />
+              ) : (
+                <ExpandMoreIcon sx={expandIcons} onClick={handleExpandClick} />
+              )}
+            </IconButton>
+          </Box>
+          <Box
+            sx={{
+              // border: "4px solid red",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              gap: 3,
+              my: 2,
+            }}
+          >
+            <Box>
+              <VisibilityIcon />
+              {singleBlog.countOfVisitors}
+            </Box>
+            <Box>
+              <CommentIcon
+                sx={{ cursor: "pointer" }}
+                onClick={handleComments}
+              />
+              {/* {singleBlog?.comments?.length} */}
+            </Box>
+            <Box>
+              (<FavoriteBorderIcon sx={{ cursor: "pointer" }} />
+              {/* {singleBlog.likes.length} */}
+              <FavoriteIcon sx={{ color: "red", cursor: "pointer" }} />)
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      <Box>
+        {authorizedAuthor ? (
+          <>
+            <Button sx={btnStyle} onClick={handleUpdateBlog}>
+              Update Blog
+            </Button>
+            <Button
+              sx={{ backgroundColor: "red", color: "white" }}
+              onClick={handleDeleteBlog}
+            >
+              Delete Blog
+            </Button>
+          </>
+        ) : null}
+      </Box>
+      {openComments ? <CommentForm comments={comments} blogs={blogs} /> : null}
+    </Box>
+  );
 };
 
 export default Detail;

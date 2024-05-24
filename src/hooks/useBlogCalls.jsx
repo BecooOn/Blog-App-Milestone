@@ -6,6 +6,7 @@ import {
   fetchStart,
   getBlogSuccess,
   promiseAllBlogsSuccess,
+  getSingleBlogSuccess,
   fetchFail,
 } from "../features/blogSlice";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
@@ -14,14 +15,26 @@ const useBlogCalls = () => {
   const { axiosToken } = useAxios();
   const dispatch = useDispatch();
 
-  //!------------Verilerin API den alınması işlemi----------
   const getBlogs = async (endpoint) => {
     dispatch(fetchStart());
     try {
       const {
         data: { data },
-      } = await axiosToken(`/${endpoint}/`);
+      } = await axiosToken(endpoint);
       dispatch(getBlogSuccess({ data, path: endpoint }));
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
+
+  //!---------Single Blog-----------------------
+  const getSingleBlogs = async (id) => {
+    dispatch(fetchStart());
+    try {
+      const {
+        data: { data },
+      } = await axiosToken(`/blogs/${id}`);
+      dispatch(getSingleBlogSuccess({ data}));
     } catch (error) {
       dispatch(fetchFail());
     }
@@ -99,7 +112,14 @@ const useBlogCalls = () => {
     }
   };
 
-  return { getBlogs, deleteBlog, createBlog, updateBlog, promiseAllBlogs };
+  return {
+    getBlogs,
+    getSingleBlogs,
+    deleteBlog,
+    createBlog,
+    updateBlog,
+    promiseAllBlogs,
+  };
 };
 
 export default useBlogCalls;

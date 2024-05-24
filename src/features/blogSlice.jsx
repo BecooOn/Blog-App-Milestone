@@ -5,6 +5,7 @@ const initialState = {
   categories: [],
   comments: [],
   users: [],
+  singleBlog:[],
   loading: false,
   error: false,
 };
@@ -20,6 +21,11 @@ const getBlogSlice = createSlice({
     getBlogSuccess: (state, { payload }) => {
       state.loading = false;
       state[payload.path] = payload.data;
+    },
+    getSingleBlogSuccess:(state,{payload})=>{
+      // console.log(payload);
+      state.loading = false;
+      state.singleBlog = payload.data
     },
     promiseAllBlogsSuccess: (
       state,
@@ -42,6 +48,6 @@ const getBlogSlice = createSlice({
   },
 });
 
-export const { fetchStart, getBlogSuccess, promiseAllBlogsSuccess, fetchFail } =
+export const { fetchStart, getBlogSuccess, promiseAllBlogsSuccess,getSingleBlogSuccess, fetchFail } =
   getBlogSlice.actions;
 export default getBlogSlice.reducer;
