@@ -30,6 +30,7 @@ const authSlice = createSlice({
       state.email = payload.user.email;
       state.firstName = payload.user.firstName;
       state.lastName = payload.user.lastName;
+      state.password = payload.user.password;
       state.image = payload.user.image;
       state.city = payload.user.city;
       state.bio = payload.user.bio;
@@ -41,6 +42,7 @@ const authSlice = createSlice({
       //! register fullfilled için
       state.loading = false;
       state.username = payload.data.username;
+      state.password = payload.user.password;
       state.email = payload.data.email;
       state.firstName = payload.data.firstName;
       state.lastName = payload.data.lastName;

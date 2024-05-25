@@ -23,7 +23,8 @@ export default function Card({ setToggle }) {
   const { getBlogs } = useBlogCalls();
   const { blogs } = useSelector((state) => state.blog);
   const navigate = useNavigate();
-  //   console.log(blogs);
+  // console.log(blogs);
+  console.log(image);
 
   React.useEffect(() => {
     getBlogs("blogs");
@@ -41,15 +42,14 @@ export default function Card({ setToggle }) {
   };
 
   return (
-    <Grid
-      container
-      spacing={60}
+    <Box
       sx={{
         display: "flex",
         justifyContent: "center",
+        flexDirection: "column",
       }}
     >
-      <Grid item xs={12} sm={10} md={8} lg={6} container spacing={2}>
+      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
         <Grid
           item
           xs={12}
@@ -66,40 +66,42 @@ export default function Card({ setToggle }) {
           <List
             sx={{
               width: "100%",
-              maxWidth: 600,
+              maxWidth: 700,
               bgcolor: "background.paper",
             }}
           >
             {blogs.map((item) => (
-              <>
+              <React.Fragment key={item._id}>
                 <ListItem
-                  key={item._id}
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
                     justifyContent: "center",
+                    // flexDirection:"column"
                   }}
                 >
-                  <Box sx={{ m: 2 }}>
-                    <img src={item.image} alt="" width="250px" />
+                  <Box sx={{ m: 2, display: "block", textAlign: "center" }}>
+                    <img src={item.image} alt="" width="70%" />
                   </Box>
 
                   <ListItemText
-                    primary={item.title}
+                    primary={
+                      <Typography variant="h6" align="center">
+                        {item.title}
+                      </Typography>
+                    }
                     sx={{ textAlign: "center" }}
                     secondary={
                       <Box>
-                        <Box sx={{ display: "flex" }}>
-                          <Typography>
-                            {item.content.slice(0, 80)}...
-                          </Typography>
+                        <Typography>{item.content.slice(0, 80)}...</Typography>
+                        <Box textAlign="center" my={2}>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleReadMore(item._id)}
+                          >
+                            Read More
+                          </Button>
                         </Box>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleReadMore(item._id)}
-                        >
-                          Read More
-                        </Button>
                         <Box
                           sx={{
                             display: "flex",
@@ -118,9 +120,9 @@ export default function Card({ setToggle }) {
                             {item.comments.length}
                           </Box>
                           <Box>
-                            (<FavoriteBorderIcon />
+                            <FavoriteBorderIcon />
                             {item.likes.length}
-                            <FavoriteIcon sx={{ color: "red" }} />)
+                            <FavoriteIcon sx={{ color: "red" }} />
                           </Box>
                         </Box>
                       </Box>
@@ -128,7 +130,7 @@ export default function Card({ setToggle }) {
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
-              </>
+              </React.Fragment>
             ))}
           </List>
         </Grid>
@@ -137,38 +139,30 @@ export default function Card({ setToggle }) {
             <ListItem sx={{ display: "block" }}>
               <Box sx={{ textAlign: "center" }}>
                 <img
-                  alt={username}
                   src={image}
+                  alt={username}
                   style={{ width: "70px", height: "70px", borderRadius: "50%" }}
                 />
               </Box>
               <ListItemText
                 primary={`Welcome ${username}`}
                 secondary={
-                  <>
-                    <Box>
-                      <Typography>{`${firstName} ${lastName}`}</Typography>
-                      <Typography>{`${email}`}</Typography>
-                      <Typography>
-                        <Typography
-                          component="span"
-                          sx={{ fontWeight: "bold" }}
-                        >
-                          City:
-                        </Typography>
-                        {city}
+                  <Box>
+                    <Typography>{`${firstName} ${lastName}`}</Typography>
+                    <Typography>{`${email}`}</Typography>
+                    <Typography>
+                      <Typography component="span" sx={{ fontWeight: "bold" }}>
+                        City:
                       </Typography>
-                      <Typography>
-                        <Typography
-                          component="span"
-                          sx={{ fontWeight: "bold" }}
-                        >
-                          Bio:
-                        </Typography>
-                        {bio}
+                      {city}
+                    </Typography>
+                    <Typography>
+                      <Typography component="span" sx={{ fontWeight: "bold" }}>
+                        Bio:
                       </Typography>
-                    </Box>
-                  </>
+                      {bio}
+                    </Typography>
+                  </Box>
                 }
               />
             </ListItem>
@@ -189,7 +183,7 @@ export default function Card({ setToggle }) {
             </>
           )}
         </Grid>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

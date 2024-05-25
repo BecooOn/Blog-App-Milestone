@@ -16,7 +16,7 @@ function App() {
         dark: teal["800"],
       },
       secondary: {
-        light:amber["200"],
+        light: amber["200"],
         main: amber["500"],
         dark: amber["800"],
       },

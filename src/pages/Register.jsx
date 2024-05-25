@@ -87,13 +87,13 @@ const Register = ({ setToggle }) => {
           <Formik
             initialValues={{
               username: "",
+              password: "",
+              email: "",
               firstName: "",
               lastName: "",
-              email: "",
               image: "",
-              bio: "",
-              password: "",
               city: "",
+              bio: "",
             }}
             validationSchema={registerSchema}
             onSubmit={(values, actions) => {

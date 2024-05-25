@@ -2,7 +2,6 @@
 //* Eğer uygulamanın her yerinde kullanmak için bazı fonksiyonlara ihtyaç varsa  ve bu fonksiyonlar içerisinde custom hook'ların ( useSelector, useDispatch,useNavigate vb.) kullanılması gerekiyorsa o zaman çözüm bu dosyayı custom hook'a çevirmektir.
 //? İstek atma işlemlerini burada oluşturduk. Tek alan içerisinde topladık
 
-import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import {
   fetchFail,
   fetchStart,
@@ -14,6 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useAxios from "./useAxios";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useAuthCalls = () => {
   const dispatch = useDispatch();
@@ -41,8 +41,10 @@ const useAuthCalls = () => {
     try {
       const { data } = await axiosPublic.post("/users/", userData);
       dispatch(registerSuccess(data));
+      toastSuccessNotify("New user successfully registered!");
       navigate("/");
     } catch (error) {
+      toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());
     }
   };

@@ -71,10 +71,10 @@ const useBlogCalls = () => {
   };
 
   //!-----------Verilerin güncellenmesi işlemi-----
-  const updateBlog = async (endpoint, blogs) => {
+  const updateBlog = async (endpoint,_id, information) => {
     dispatch(fetchStart());
     try {
-      await axiosToken.put(`/${endpoint}/${blogs._id}`, blogs);
+      await axiosToken.patch(`/${endpoint}/${_id}`, information);
       toastSuccessNotify(`${endpoint} was updated successfully!`);
       getBlogs(endpoint);
     } catch (error) {
