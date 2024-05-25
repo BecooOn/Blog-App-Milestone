@@ -40,6 +40,7 @@ const RegisterForm = ({
   errors,
   touched,
   handleBlur,
+  isSubmitting,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -72,6 +73,18 @@ const RegisterForm = ({
           onBlur={handleBlur}
           error={touched.firstName && Boolean(errors.firstName)}
           helperText={touched.firstName && errors.firstName}
+        />
+        <TextField
+          label="Last Name *"
+          name="lastName"
+          id="lastName"
+          type="text"
+          variant="outlined"
+          value={values.lastName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={touched.lastName && Boolean(errors.lastName)}
+          helperText={touched.lastName && errors.lastName}
         />
         <TextField
           label="Email *"
@@ -133,7 +146,13 @@ const RegisterForm = ({
             ),
           }}
         />
-        <Button type="submit" variant="contained" size="large" sx={btnStyle}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={isSubmitting}
+          size="large"
+          sx={btnStyle}
+        >
           Submit
         </Button>
       </Box>
