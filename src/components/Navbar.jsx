@@ -21,7 +21,7 @@ const settings = ["Profile", "My Blogs", "Logout"];
 const loginSet = ["Login"];
 
 function Navbar({ setToggle }) {
-  const { username } = useSelector((state) => state.auth);
+  const { username, image } = useSelector((state) => state.auth);
   // console.log(username);
   // console.log(image);
   const { logout, getUser } = useAuthCalls();
@@ -92,17 +92,17 @@ function Navbar({ setToggle }) {
             />
             <Typography
               noWrap
-              component="a"
-              href="#"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
-                fontWeight: 700,
+                fontWeight: 800,
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
                 px: 1,
+                cursor: "pointer",
               }}
+              onClick={() => navigate("/")}
             >
               's Blog
             </Typography>
@@ -167,9 +167,14 @@ function Navbar({ setToggle }) {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title={`${username} open settings`}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar>{username && username.slice(0,1).toUpperCase()}</Avatar>
+                  {username ? (
+                    <Avatar src={image} alt={username} />
+                  ) : (
+                    <Avatar />
+                  )}
                 </IconButton>
               </Tooltip>
+              {username && <Typography>{username}</Typography>}
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"

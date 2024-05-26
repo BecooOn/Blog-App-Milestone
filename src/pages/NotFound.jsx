@@ -25,7 +25,7 @@ const NotFound = () => {
             <Button onClick={() => navigate(-1)}>
               <ArrowBackIosIcon /> back
             </Button>
-            <Button onClick={() => navigate("/stock")}>
+            <Button onClick={() => navigate("/")}>
               <HomeIcon /> Home
             </Button>
           </Box>

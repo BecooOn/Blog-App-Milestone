@@ -22,8 +22,9 @@ const Register = ({ setToggle }) => {
         container
         justifyContent="center"
         direction="row-reverse"
-        rowSpacing={{ sm: 1 }}
-        sx={{ my: 6 }}
+        sx={{
+          p: 4,
+        }}
       >
         <Grid item xs={12} mb={3} sx={{ alignContent: "center" }}>
           <Typography
@@ -100,6 +101,7 @@ const Register = ({ setToggle }) => {
               register(values);
               actions.resetForm();
               actions.setSubmitting(false);
+              setToggle(false); //? register başarılı olursa login sayfası görünmesi için
             }}
             component={(props) => <RegisterForm {...props} />}
           ></Formik>

@@ -6,6 +6,7 @@ const initialState = {
   comments: [],
   users: [],
   singleBlog:[],
+  myBlogs:[],
   loading: false,
   error: false,
 };

@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-// import { Outlet } from "react-router-dom";
 import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -23,8 +22,6 @@ export default function Card({ setToggle }) {
   const { getBlogs } = useBlogCalls();
   const { blogs } = useSelector((state) => state.blog);
   const navigate = useNavigate();
-  // console.log(blogs);
-  console.log(image);
 
   React.useEffect(() => {
     getBlogs("blogs");
@@ -61,6 +58,9 @@ export default function Card({ setToggle }) {
             height: "800px",
             overflowY: "scroll",
             "&::-webkit-scrollbar": { width: "0px" },
+            textAlign: { xs: "center", sm: "left" },
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <List
@@ -75,66 +75,88 @@ export default function Card({ setToggle }) {
                 <ListItem
                   sx={{
                     display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
-                    // flexDirection:"column"
+                    justifyContent: {
+                      xs: "center",
+                      sm: "flex-start",
+                    },
+                    alignItems: "center",
+                    flexDirection: {
+                      xs: "column",
+                      sm: "row",
+                    },
+                    textAlign: { xs: "center", sm: "left" },
+                    position: "relative",
                   }}
                 >
-                  <Box sx={{ m: 2, display: "block", textAlign: "center" }}>
-                    <img src={item.image} alt="" width="70%" />
+                  <Box sx={{ m: 2 }}>
+                    <img src={item.image} alt="" style={{ width: "200px" }} />
                   </Box>
 
-                  <ListItemText
-                    primary={
-                      <Typography variant="h6" align="center">
-                        {item.title}
-                      </Typography>
-                    }
-                    sx={{ textAlign: "center" }}
-                    secondary={
-                      <Box>
-                        <Typography>{item.content.slice(0, 80)}...</Typography>
-                        <Box textAlign="center" my={2}>
-                          <Button
-                            variant="outlined"
-                            onClick={() => handleReadMore(item._id)}
+                  <Box sx={{ flex: 1, ml: { sm: 2 } }}>
+                    <ListItemText
+                      primary={
+                        <Typography variant="h6" sx={{ textAlign: { xs: "center", sm: "left" } }}>
+                          {item.title}
+                        </Typography>
+                      }
+                      secondary={
+                        <Box>
+                          <Typography component="span">
+                            {item.content.slice(0, 80)}...
+                          </Typography>
+                          <Box my={2} sx={{ textAlign: { xs: "center", sm: "left" } }}>
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => handleReadMore(item._id)}
+                            >
+                              Read More
+                            </Button>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: { xs: "center", sm: "flex-start" },
+                              gap: 3,
+                              my: 2,
+                              position: { sm: "absolute" },
+                              bottom: { sm: 0 },
+                              right: { sm: 0 },
+                              textAlign: { xs: "center", sm: "left" },
+                            }}
                           >
-                            Read More
-                          </Button>
-                        </Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            gap: 3,
-                            my: 2,
-                          }}
-                        >
-                          <Box>
-                            <VisibilityIcon />
-                            {item.countOfVisitors}
-                          </Box>
-                          <Box>
-                            <CommentIcon />
-                            {item.comments.length}
-                          </Box>
-                          <Box>
-                            <FavoriteBorderIcon />
-                            {item.likes.length}
-                            <FavoriteIcon sx={{ color: "red" }} />
+                            <Box>
+                              <VisibilityIcon />
+                              {item.countOfVisitors}
+                            </Box>
+                            <Box>
+                              <CommentIcon />
+                              {item.comments.length}
+                            </Box>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                              <FavoriteBorderIcon />
+                              {item.likes.length}
+                              <FavoriteIcon sx={{ color: "red", ml: 1 }} />
+                            </Box>
                           </Box>
                         </Box>
-                      </Box>
-                    }
-                  />
+                      }
+                    />
+                  </Box>
                 </ListItem>
                 <Divider variant="inset" component="li" />
               </React.Fragment>
             ))}
           </List>
         </Grid>
-        <Grid item xs={12} sm={3} order={{ xs: 1, sm: 2 }}>
+        <Grid
+          item
+          xs={12}
+          sm={3}
+          order={{ xs: 1, sm: 2 }}
+          sx={{ textAlign: { xs: "center", sm: "left" } }}
+        >
           {username ? (
             <ListItem sx={{ display: "block" }}>
               <Box sx={{ textAlign: "center" }}>

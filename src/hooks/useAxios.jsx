@@ -14,7 +14,7 @@ const useAxios = () => {
     baseURL: `${process.env.REACT_APP_BASE_URL}`,
   })
 
-  return { axiosToken, axiosPublic } //* useApiRequest te kullanmak için dışarı açtık
+  return { axiosToken, axiosPublic }
 }
 
 export default useAxios

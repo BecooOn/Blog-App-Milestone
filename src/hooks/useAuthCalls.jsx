@@ -1,7 +1,3 @@
-//! Burada custom hook oluşturduk.
-//* Eğer uygulamanın her yerinde kullanmak için bazı fonksiyonlara ihtyaç varsa  ve bu fonksiyonlar içerisinde custom hook'ların ( useSelector, useDispatch,useNavigate vb.) kullanılması gerekiyorsa o zaman çözüm bu dosyayı custom hook'a çevirmektir.
-//? İstek atma işlemlerini burada oluşturduk. Tek alan içerisinde topladık
-
 import {
   fetchFail,
   fetchStart,
@@ -9,6 +5,7 @@ import {
   registerSuccess,
   logoutSuccess,
   getUserSuccess,
+  getDeleteSuccess,
 } from "../features/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +15,7 @@ import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 const useAuthCalls = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { axiosToken, axiosPublic } = useAxios(); //* oluşturduğumuz axios örneklerini import ettik
+  const { axiosToken, axiosPublic } = useAxios();
 
   //!-----------LOGIN--------------
   const login = async (userData) => {
@@ -39,10 +36,10 @@ const useAuthCalls = () => {
   const register = async (userData) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosPublic.post("/users/", userData);
+      const { data } = await axiosToken.post("/users/", userData);
       dispatch(registerSuccess(data));
       toastSuccessNotify("New user successfully registered!");
-      navigate("/");
+      navigate("/auth");
     } catch (error) {
       toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());
@@ -94,11 +91,10 @@ const useAuthCalls = () => {
     dispatch(fetchStart());
     try {
       await axiosToken.delete(`/users/${id}`);
+      dispatch(getDeleteSuccess()); //? navigate kullanmadım: çünkü getDeleteSuccess ile  tüm kullanıcı verileri sıfırlandığı için dashboard'a gönderdim.
       toastSuccessNotify(`Account was deleted successfully!`);
-      getUser();
-      navigate("/");
-      // dispatch(getUserSuccess(data));
     } catch (error) {
+      // console.error("Delete user failed:", error);
       dispatch(fetchFail());
       toastErrorNotify(`Oops! there is something wrong while deleting`);
     }

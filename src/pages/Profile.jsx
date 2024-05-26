@@ -11,15 +11,13 @@ import Typography from "@mui/material/Typography";
 import UpdateProfile from "../components/UpdateProfile";
 import { btnStyle } from "../styles/globalStyles";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const { username, email, firstName, lastName, image, _id } = useSelector(
     (state) => state.auth
   );
-  const { getBlogs, deleteBlog } = useBlogCalls();
-  const { logout } = useAuthCalls();
-  const navigate = useNavigate();
+  const { getBlogs } = useBlogCalls();
+  const { deleteUser } = useAuthCalls();
 
   useEffect(() => {
     getBlogs("users");
@@ -36,8 +34,7 @@ export default function Profile() {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteBlog("users", _id);
-        logout();
+        deleteUser(_id);
       } else {
         Swal.fire("Canceled", "User deletion has been cancelled!");
       }
@@ -70,9 +67,10 @@ export default function Profile() {
             width: "180px",
             height: "180px",
             borderRadius: "50%",
+            // border:"2px solid red"
           }}
         >
-          <img src={image} alt={username} style={{ width: "100%" }} />
+          <img src={image} alt={username} style={{ width: "180px", height: "180px", borderRadius: "50%" }} />
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -87,7 +85,7 @@ export default function Profile() {
         </CardContent>
         <CardActions>
           <UpdateProfile />
-          <Button sx={btnStyle} onClick={handleDeleteUser}>
+          <Button sx={btnStyle} size="small" onClick={handleDeleteUser}>
             Delete your account
           </Button>
         </CardActions>

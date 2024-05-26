@@ -20,7 +20,7 @@ export default function About() {
       <Card
         sx={{
           maxWidth: "500px",
-          boxShadow: "0 0 10px black",
+          boxShadow: "0 0 20px black",
           p: 5,
           textAlign: "center",
         }}
@@ -32,8 +32,8 @@ export default function About() {
               width: 140,
               borderRadius: "50%",
               backgroundColor: "teal",
-              border: "1px solid blue",
-              outline: "2px solid blue",
+              border: "1px solid orange",
+              outline: "2px solid orange",
               outlineOffset: "3px",
             }}
             image={logo}

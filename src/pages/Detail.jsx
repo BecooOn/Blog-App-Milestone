@@ -22,7 +22,8 @@ const Detail = () => {
   const { promiseAllBlogs, getSingleBlogs, deleteBlog } = useBlogCalls();
   const { id } = useParams(); //? ilgili id ye sahip blog için
 
-  const { blogs, categories, comments, users, singleBlog } = useSelector(
+  const{_id} = useSelector(state => state.auth) //? singleBlog içerisndeki userId ile login olan userId aynı  olup olmadığı kontrol ve buna göre update delete işlemleri yapıp yapamayacağını kontrol ediyoruz
+  const { blogs, comments, singleBlog } = useSelector(
     (state) => state.blog
   );
   // console.log(singleBlog?.userId?._id);
@@ -30,7 +31,7 @@ const Detail = () => {
   // console.log(singleBlog);
   // console.log(users);
 
-  const authorizedAuthor = singleBlog?.userId?._id === users[1]?._id;
+  const authorizedAuthor = singleBlog?.userId?._id === _id;
   // console.log(authorizedAuthor);
 
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Detail = () => {
   useEffect(() => {
     getSingleBlogs(id);
     promiseAllBlogs();
-  }, []);
+  }, [setOpen]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -77,7 +78,6 @@ const Detail = () => {
       }
     });
   };
-
   return (
     <Box
       sx={{
@@ -100,13 +100,8 @@ const Detail = () => {
           src={`${singleBlog?.image}`}
           alt="img"
           sx={{
-            width: "100%",
+            width: "75%",
             borderRadius: "10px",
-            transition: "transform 0.3s ease-in-out",
-            "&:hover": {
-              // cursor: "pointer",
-              transform: "scale(1.05)",
-            },
           }}
         />
         <Box>

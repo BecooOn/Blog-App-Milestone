@@ -22,23 +22,23 @@ const UpdateModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
     title: "",
     content: "",
     image: "",
-    isPublish: true,
+    isPublish: "",
   });
-// console.log(singleBlog);
-  const { updateBlog } = useBlogCalls();
+  // console.log(singleBlog);
+  const {getBlogs, updateBlog } = useBlogCalls();
   const { categories } = useSelector((state) => state.blog);
 
   useEffect(() => {
-    if (singleBlog) {
-      setInfo({
-        category: singleBlog.categoryId?._id || "",
-        title: singleBlog.title || "",
-        content: singleBlog.content || "",
-        image: singleBlog.image || "",
-        isPublish: singleBlog.isPublish ? "Published" : "Drafted",
-      });
-    }
-  }, [singleBlog]);
+    // if (singleBlog) {
+    setInfo({
+      category: singleBlog.categoryId?._id || "",
+      title: singleBlog.title || "",
+      content: singleBlog.content || "",
+      image: singleBlog.image || "",
+      isPublish: singleBlog.isPublish,
+    });
+    // }
+  }, [open]);
 
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
@@ -52,9 +52,10 @@ const UpdateModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
       title: title,
       content: content,
       image: image,
-      isPublish: isPublish === "Published",
+      isPublish: isPublish,
     };
-    updateBlog("blogs",singleBlog._id, information);
+    updateBlog("blogs", singleBlog._id, information);
+    getBlogs("blogs")
     handleUpdateBlogClose();
   };
 
@@ -120,8 +121,9 @@ const UpdateModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
                 onChange={handleChange}
                 required
               >
-                <MenuItem value="Published">Published</MenuItem>
-                <MenuItem value="Drafted">Drafted</MenuItem>
+                <MenuItem value="">Please choose status...</MenuItem>
+                <MenuItem value={true}>Published</MenuItem>
+                <MenuItem value={false}>Drafted</MenuItem>
               </Select>
             </FormControl>
 

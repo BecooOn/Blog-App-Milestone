@@ -40,6 +40,19 @@ const useBlogCalls = () => {
     }
   };
 
+  //!---------My Blogs-----------------------
+  const getMyBlogs = async (id) => {
+    dispatch(fetchStart());
+    try {
+      const {
+        data: { data },
+      } = await axiosToken(`/blogs?author=${id}`);
+      console.log(data);
+      dispatch(getBlogSuccess({ data, path: "myBlogs" }));
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
   //!-----------------Create(oluşturma) işlemi-----------
   const createBlog = async (endpoint, blogs) => {
     dispatch(fetchStart());
@@ -115,6 +128,7 @@ const useBlogCalls = () => {
   return {
     getBlogs,
     getSingleBlogs,
+    getMyBlogs,
     deleteBlog,
     createBlog,
     updateBlog,

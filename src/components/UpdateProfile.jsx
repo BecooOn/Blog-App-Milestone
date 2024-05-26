@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
@@ -118,7 +119,7 @@ export default function UpdateProfile() {
 
   return (
     <div>
-      <Button sx={btnStyle} onClick={handleOpen}>
+      <Button sx={btnStyle} size="small" onClick={handleOpen}>
         Update your Profile
       </Button>
       <Modal
@@ -128,6 +129,21 @@ export default function UpdateProfile() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+        <Box
+            sx={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+            }}
+          >
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{ "&:hover": { color: "red" } }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
           <form onSubmit={handleSubmit}>
             <Box
               sx={{

@@ -20,11 +20,9 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     fetchStart: (state) => {
-      //! pending için
       state.loading = true;
     },
     loginSuccess: (state, { payload }) => {
-      //! login fullfilled için
       state.loading = false;
       state.username = payload.user.username;
       state.email = payload.user.email;
@@ -39,41 +37,41 @@ const authSlice = createSlice({
       state.error = false;
     },
     registerSuccess: (state, { payload }) => {
-      //! register fullfilled için
       state.loading = false;
-      state.username = payload.data.username;
-      state.password = payload.user.password;
-      state.email = payload.data.email;
-      state.firstName = payload.data.firstName;
-      state.lastName = payload.data.lastName;
-      state.image = payload.data.image;
-      state.city = payload.data.city;
-      state.bio = payload.data.bio;
-      state._id = payload.data._id;
+      state.username = payload.username;
+      state.password = payload.password;
+      state.email = payload.email;
+      state.firstName = payload.firstName;
+      state.lastName = payload.lastName;
+      state.image = payload.image;
+      state.city = payload.city;
+      state.bio = payload.bio;
+      state._id = payload._id;
       state.token = payload.token;
       state.error = false;
     },
     getUserSuccess: (state, { payload }) => {
+      console.log(payload);
       state.loading = false;
-      state.username = payload.data.username;
-      state.firstName = payload.data.firstName;
-      state.lastName = payload.data.lastName;
-      state.email = payload.data.email;
-      state.password = payload.data.password;
-      state._id = payload.data._id;
+      state.username = payload.username;
+      state.firstName = payload.firstName;
+      state.lastName = payload.lastName;
+      state.email = payload.email;
+      state.password = payload.password;
+      state._id = payload._id;
       state.error = false;
     },
-
     logoutSuccess: (state) => {
-      //! logout fullfilled için
       state.loading = false;
       state.username = "";
       state.token = "";
       // return initialState;
     },
 
+    getDeleteSuccess: (state) =>{
+      return initialState;
+    },
     fetchFail: (state) => {
-      //! rejected için
       state.loading = false;
       state.error = true;
     },
@@ -86,6 +84,8 @@ export const {
   registerSuccess,
   getUserSuccess,
   logoutSuccess,
+  getDeleteSuccess,
   fetchFail,
 } = authSlice.actions;
+
 export default authSlice.reducer;

@@ -27,7 +27,7 @@ const AppRouter = () => {
 
   useEffect(()=>{
     sessionStorage.setItem("toggle", JSON.stringify(toggle));
-  })
+  },[])
 
   return (
     <Router>
