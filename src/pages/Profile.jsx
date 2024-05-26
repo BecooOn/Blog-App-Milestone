@@ -70,7 +70,11 @@ export default function Profile() {
             // border:"2px solid red"
           }}
         >
-          <img src={image} alt={username} style={{ width: "180px", height: "180px", borderRadius: "50%" }} />
+          <img
+            src={image}
+            alt={username}
+            style={{ width: "180px", height: "180px", borderRadius: "50%" }}
+          />
         </Box>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -85,7 +89,15 @@ export default function Profile() {
         </CardContent>
         <CardActions>
           <UpdateProfile />
-          <Button sx={btnStyle} size="small" onClick={handleDeleteUser}>
+          <Button
+            sx={{
+              backgroundColor: "red",
+              color: "white",
+              "&:hover": { backgroundColor: "orange" },
+            }}
+            size="small"
+            onClick={handleDeleteUser}
+          >
             Delete your account
           </Button>
         </CardActions>

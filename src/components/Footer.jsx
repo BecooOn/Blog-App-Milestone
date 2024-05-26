@@ -40,14 +40,16 @@ export default function Footer() {
         textAlign: "left",
       }}
     >
-      <Box sx={{
-        height: 320,
-        flexGrow: 1,
-        position: "absolute",
-        bottom: 25,
-        left: 8,
-        textAlign: "left",
-      }}>
+      <Box
+        sx={{
+          height: 320,
+          flexGrow: 1,
+          position: "absolute",
+          bottom: 25,
+          left: 8,
+          textAlign: "left",
+        }}
+      >
         <SpeedDial ariaLabel="SpeedDial basic example" icon={<SpeedDialIcon />}>
           {actions.map((action) => (
             <SpeedDialAction
@@ -63,7 +65,9 @@ export default function Footer() {
               tooltipTitle="Logout"
               onClick={() => logout()}
             />
-          ):<Box sx={{width:"40px",height:"56px"}}></Box>}
+          ) : (
+            <Box sx={{ width: "40px", height: "56px" }}></Box>
+          )}
         </SpeedDial>
       </Box>
       <Typography

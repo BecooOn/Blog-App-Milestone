@@ -112,6 +112,7 @@ export default function UpdateProfile() {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateBlog("users", _id, info);
+    setOpen(false);
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -129,7 +130,7 @@ export default function UpdateProfile() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <Box
+          <Box
             sx={{
               position: "absolute",
               top: 12,

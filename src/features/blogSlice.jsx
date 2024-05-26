@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blogs: [],
+  paginatedBlogs: [],
   categories: [],
   comments: [],
   users: [],
-  singleBlog:[],
-  myBlogs:[],
+  singleBlog: [],
+  myBlogs: [],
+  likes:[],
   loading: false,
   error: false,
 };
@@ -23,10 +25,24 @@ const getBlogSlice = createSlice({
       state.loading = false;
       state[payload.path] = payload.data;
     },
-    getSingleBlogSuccess:(state,{payload})=>{
+    getPaginatedBlogsSuccess: (state, { payload }) => {
       // console.log(payload);
       state.loading = false;
-      state.singleBlog = payload.data
+      state.paginatedBlogs = payload.data;
+    },
+    getSingleBlogSuccess: (state, { payload }) => {
+      // console.log(payload);
+      state.loading = false;
+      state.singleBlog = payload.data;
+    },
+
+    likeSuccess:(state,{payload}) =>{
+      state.loading = false;
+      state.likes = payload;
+    },
+    getCommentsSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.comments = payload.data;
     },
     promiseAllBlogsSuccess: (
       state,
@@ -49,6 +65,14 @@ const getBlogSlice = createSlice({
   },
 });
 
-export const { fetchStart, getBlogSuccess, promiseAllBlogsSuccess,getSingleBlogSuccess, fetchFail } =
-  getBlogSlice.actions;
+export const {
+  fetchStart,
+  getBlogSuccess,
+  getPaginatedBlogsSuccess,
+  promiseAllBlogsSuccess,
+  getSingleBlogSuccess,
+  likeSuccess,
+  getCommentsSuccess,
+  fetchFail,
+} = getBlogSlice.actions;
 export default getBlogSlice.reducer;

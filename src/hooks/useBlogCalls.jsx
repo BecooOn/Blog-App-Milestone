@@ -7,12 +7,15 @@ import {
   getBlogSuccess,
   promiseAllBlogsSuccess,
   getSingleBlogSuccess,
+  likeSuccess,
+  getCommentsSuccess,
   fetchFail,
+  getPaginatedBlogsSuccess,
 } from "../features/blogSlice";
 import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useBlogCalls = () => {
-  const { axiosToken } = useAxios();
+  const { axiosToken, axiosPublic } = useAxios();
   const dispatch = useDispatch();
 
   const getBlogs = async (endpoint) => {
@@ -26,6 +29,18 @@ const useBlogCalls = () => {
       dispatch(fetchFail());
     }
   };
+  //!-------Pagination-------------
+  const getPaginatedBlogs = async (page) => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosPublic(`/blogs?limit=5&page=${page}`);
+      // console.log(data?.data);
+      // console.log(data?.details?.pages?.total);
+      dispatch(getPaginatedBlogsSuccess({ data }));
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
 
   //!---------Single Blog-----------------------
   const getSingleBlogs = async (id) => {
@@ -34,7 +49,7 @@ const useBlogCalls = () => {
       const {
         data: { data },
       } = await axiosToken(`/blogs/${id}`);
-      dispatch(getSingleBlogSuccess({ data}));
+      dispatch(getSingleBlogSuccess({ data }));
     } catch (error) {
       dispatch(fetchFail());
     }
@@ -53,11 +68,24 @@ const useBlogCalls = () => {
       dispatch(fetchFail());
     }
   };
-  //!-----------------Create(oluşturma) işlemi-----------
-  const createBlog = async (endpoint, blogs) => {
+
+  //!-------------Like unlike için-------------
+  const postLike = async (id) => {
+    try {
+      const { data } = await axiosToken.post(`/blogs/${id}/postLike`, {});
+      // console.log(data);
+      dispatch(likeSuccess(data));
+      // await getBlogs("blogs");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //!-----------------Create işlemi-----------
+  const createBlog = async (endpoint, information) => {
     dispatch(fetchStart());
     try {
-      await axiosToken.post(`/${endpoint}/`, blogs);
+      await axiosToken.post(`/${endpoint}/`, information);
       toastSuccessNotify(`${endpoint} was added successfully!`);
       getBlogs(endpoint);
     } catch (error) {
@@ -67,6 +95,37 @@ const useBlogCalls = () => {
       );
     }
   };
+
+  //!-----------------Get comments-----------
+  const getComments = async () => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosToken(`/comments/?limit=100`);
+      dispatch(getCommentsSuccess(data));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`Oops! there is something wrong while getting comments`);
+    }
+  };
+
+  //!-----------------Comment create-----------
+  const createComment = async (information) => {
+    dispatch(fetchStart());
+    try {
+      await axiosToken.post("/comments/", information);
+      toastSuccessNotify(`Comment was added successfully!`);
+      await getComments();
+      await getBlogs("comments");
+    } catch (error) {
+      // console.error("Error while adding comment:", error.response || error.message || error);
+      dispatch(fetchFail());
+      toastErrorNotify(
+        `Oops! there is something wrong while adding the comment`
+      );
+    }
+  };
+  
+
 
   //!-------------Veri silme işlemi---------------------
   const deleteBlog = async (endpoint, id) => {
@@ -84,7 +143,7 @@ const useBlogCalls = () => {
   };
 
   //!-----------Verilerin güncellenmesi işlemi-----
-  const updateBlog = async (endpoint,_id, information) => {
+  const updateBlog = async (endpoint, _id, information) => {
     dispatch(fetchStart());
     try {
       await axiosToken.patch(`/${endpoint}/${_id}`, information);
@@ -127,12 +186,16 @@ const useBlogCalls = () => {
 
   return {
     getBlogs,
+    getPaginatedBlogs,
     getSingleBlogs,
     getMyBlogs,
-    deleteBlog,
+    postLike,
     createBlog,
     updateBlog,
+    getComments,
+    createComment,
     promiseAllBlogs,
+    deleteBlog,
   };
 };
 

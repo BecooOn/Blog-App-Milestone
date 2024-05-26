@@ -19,17 +19,13 @@ const Detail = () => {
   const [expanded, setExpanded] = useState(false);
   const [openComments, setOpenComments] = useState(false);
   const [open, setOpen] = useState(false); //? updateModal için
-  const { promiseAllBlogs, getSingleBlogs, deleteBlog } = useBlogCalls();
+  const { promiseAllBlogs, getSingleBlogs, deleteBlog, postLike } =
+    useBlogCalls();
   const { id } = useParams(); //? ilgili id ye sahip blog için
 
-  const{_id} = useSelector(state => state.auth) //? singleBlog içerisndeki userId ile login olan userId aynı  olup olmadığı kontrol ve buna göre update delete işlemleri yapıp yapamayacağını kontrol ediyoruz
-  const { blogs, comments, singleBlog } = useSelector(
-    (state) => state.blog
-  );
-  // console.log(singleBlog?.userId?._id);
-  // console.log(users[0]?._id);
+  const { _id } = useSelector((state) => state.auth); //? singleBlog içerisndeki userId ile login olan userId aynı  olup olmadığı kontrol ve buna göre update delete işlemleri yapıp yapamayacağını kontrol ediyoruz
+  const { blogs, comments, singleBlog } = useSelector((state) => state.blog);
   // console.log(singleBlog);
-  // console.log(users);
 
   const authorizedAuthor = singleBlog?.userId?._id === _id;
   // console.log(authorizedAuthor);
@@ -39,16 +35,17 @@ const Detail = () => {
   useEffect(() => {
     getSingleBlogs(id);
     promiseAllBlogs();
-  }, [setOpen]);
+  }, [setOpen, setOpenComments]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  //!--------yoruların açık kapalı durumu-------
+  //!--------yorumları aç/kapa------
   const handleComments = () => {
     setOpenComments(!openComments);
   };
+
   //!--------blog güncelleme modal'ı için--------------
   const handleUpdateBlogOpen = () => {
     setOpen(true);
@@ -58,7 +55,7 @@ const Detail = () => {
     setOpen(false);
   };
 
-//!--------blog'u silmek için---------------
+  //!--------blog'u silmek için---------------
   const handleDeleteBlog = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -77,6 +74,11 @@ const Detail = () => {
         Swal.fire("Canceled", "Blog deletion has been cancelled!");
       }
     });
+  };
+
+  const handleLikes = async (itemId) => {
+    await postLike(itemId);
+    await getSingleBlogs(id);
   };
   return (
     <Box
@@ -136,7 +138,7 @@ const Detail = () => {
           >
             <Typography
               component="div"
-              sx={{ display: "block", textAlign: "justify",my:1 }}
+              sx={{ display: "block", textAlign: "justify", my: 1 }}
             >
               {singleBlog?.content}
             </Typography>
@@ -173,13 +175,20 @@ const Detail = () => {
                 sx={{ cursor: "pointer" }}
                 onClick={handleComments}
               />
-              {/* {singleBlog?.comments?.length} */}
+              {singleBlog?.comments?.length}
             </Box>
-            <Box>
-              (<FavoriteBorderIcon sx={{ cursor: "pointer" }} />
-              {/* {singleBlog.likes.length} */}
-              <FavoriteIcon sx={{ color: "red", cursor: "pointer" }} />)
-            </Box>
+            <IconButton
+              aria-label="add to favorites"
+              onClick={() => handleLikes(singleBlog?._id)}
+            >
+              <FavoriteIcon
+                sx={{
+                  cursor: "pointer",
+                  color: singleBlog?.likes?.includes(_id) ? "red" : "gray",
+                }}
+              />
+              {singleBlog?.likes?.length}
+            </IconButton>
           </Box>
         </Box>
       </Box>
@@ -202,8 +211,12 @@ const Detail = () => {
           </>
         ) : null}
       </Box>
-      {openComments ? <CommentForm comments={comments} blogs={blogs} /> : null}
-      <UpdateModal handleUpdateBlogClose={handleUpdateBlogClose} open={open} singleBlog={singleBlog}/>
+      {openComments ? <CommentForm id={id} /> : null}
+      <UpdateModal
+        handleUpdateBlogClose={handleUpdateBlogClose}
+        open={open}
+        singleBlog={singleBlog}
+      />
     </Box>
   );
 };

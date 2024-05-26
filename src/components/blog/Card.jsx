@@ -1,32 +1,36 @@
 import Grid from "@mui/material/Grid";
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Pagination from "@mui/material/Pagination";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import useBlogCalls from "../../hooks/useBlogCalls";
+import useAuthCalls from "../../hooks/useAuthCalls";
 import { btnStyle } from "../../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
 
-export default function Card({ setToggle }) {
-  const { username, email, firstName, lastName, image, city, bio } =
+export default function Card({ setToggle, page, setPage }) {
+  const { username, email, firstName, lastName, image, city, bio, _id } =
     useSelector((state) => state.auth);
-  const { getBlogs } = useBlogCalls();
-  const { blogs } = useSelector((state) => state.blog);
+  const { getPaginatedBlogs, postLike, getSingleBlogs, promiseAllBlogs } =
+    useBlogCalls();
+  const { paginatedBlogs } = useSelector(
+    (state) => state.blog
+  );
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    getBlogs("blogs");
-    getBlogs("users");
-  }, []);
+  useEffect(() => {
+    promiseAllBlogs();
+    getPaginatedBlogs(page);
+  }, [page]);
 
   const handleReadMore = (_id) => {
     if (username) {
@@ -38,12 +42,34 @@ export default function Card({ setToggle }) {
     }
   };
 
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  const handleLikes = async (itemId) => {
+    if (username) {
+      await postLike(itemId);
+      await getSingleBlogs(itemId);
+    } else {
+      navigate("/auth");
+    }
+  };
+
+  const handleComments = async (itemId) => {
+    if (username) {
+      navigate(`detail/${itemId}`);
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
+        marginBottom: "24px",
       }}
     >
       <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
@@ -53,7 +79,10 @@ export default function Card({ setToggle }) {
           sm={9}
           order={{ xs: 2, sm: 1 }}
           sx={{
-            border: "1px solid gray",
+            borderTop: "1px solid gray",
+            borderRight: "1px solid gray",
+            borderLeft: "1px solid gray",
+            borderBottom: "none",
             p: 3,
             height: "800px",
             overflowY: "scroll",
@@ -70,7 +99,7 @@ export default function Card({ setToggle }) {
               bgcolor: "background.paper",
             }}
           >
-            {blogs.map((item) => (
+            {paginatedBlogs?.data?.map((item) => (
               <React.Fragment key={item._id}>
                 <ListItem
                   sx={{
@@ -95,7 +124,10 @@ export default function Card({ setToggle }) {
                   <Box sx={{ flex: 1, ml: { sm: 2 } }}>
                     <ListItemText
                       primary={
-                        <Typography variant="h6" sx={{ textAlign: { xs: "center", sm: "left" } }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ textAlign: { xs: "center", sm: "left" } }}
+                        >
                           {item.title}
                         </Typography>
                       }
@@ -104,7 +136,10 @@ export default function Card({ setToggle }) {
                           <Typography component="span">
                             {item.content.slice(0, 80)}...
                           </Typography>
-                          <Box my={2} sx={{ textAlign: { xs: "center", sm: "left" } }}>
+                          <Box
+                            my={2}
+                            sx={{ textAlign: { xs: "center", sm: "left" } }}
+                          >
                             <Button
                               variant="contained"
                               color="secondary"
@@ -117,7 +152,10 @@ export default function Card({ setToggle }) {
                             sx={{
                               display: "flex",
                               alignItems: "center",
-                              justifyContent: { xs: "center", sm: "flex-start" },
+                              justifyContent: {
+                                xs: "center",
+                                sm: "flex-start",
+                              },
                               gap: 3,
                               my: 2,
                               position: { sm: "absolute" },
@@ -131,14 +169,27 @@ export default function Card({ setToggle }) {
                               {item.countOfVisitors}
                             </Box>
                             <Box>
-                              <CommentIcon />
+                              <CommentIcon
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => handleComments(item._id)}
+                              />
                               {item.comments.length}
                             </Box>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              <FavoriteBorderIcon />
+                            <IconButton
+                              aria-label="add to favorites"
+                              onClick={() => handleLikes(item._id)}
+                            >
+                              <FavoriteIcon
+                                sx={{
+                                  cursor: "pointer",
+                                  color:
+                                    username && item?.likes?.includes(_id)
+                                      ? "red"
+                                      : "gray",
+                                }}
+                              />
                               {item.likes.length}
-                              <FavoriteIcon sx={{ color: "red", ml: 1 }} />
-                            </Box>
+                            </IconButton>
                           </Box>
                         </Box>
                       }
@@ -148,6 +199,21 @@ export default function Card({ setToggle }) {
                 <Divider variant="inset" component="li" />
               </React.Fragment>
             ))}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                m: 4,
+              }}
+            >
+              <Pagination
+                count={paginatedBlogs?.details?.pages?.total || 0}
+                page={page}
+                onChange={handlePageChange}
+                variant="outlined"
+                color="primary"
+              />
+            </Box>
           </List>
         </Grid>
         <Grid
@@ -173,16 +239,10 @@ export default function Card({ setToggle }) {
                     <Typography>{`${firstName} ${lastName}`}</Typography>
                     <Typography>{`${email}`}</Typography>
                     <Typography>
-                      <Typography component="span" sx={{ fontWeight: "bold" }}>
-                        City:
-                      </Typography>
-                      {city}
+                      <strong>City:</strong> {city}
                     </Typography>
                     <Typography>
-                      <Typography component="span" sx={{ fontWeight: "bold" }}>
-                        Bio:
-                      </Typography>
-                      {bio}
+                      <strong>Bio:</strong> {bio}
                     </Typography>
                   </Box>
                 }

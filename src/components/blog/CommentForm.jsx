@@ -5,7 +5,10 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import useBlogCalls from "../../hooks/useBlogCalls";
+import { btnStyle } from "../../styles/globalStyles";
 
 const formatDate = (isoString) => {
   const options = {
@@ -18,22 +21,40 @@ const formatDate = (isoString) => {
   return date.toLocaleDateString("en-US", options);
 };
 
-const CommentForm = ({ comments, blogs }) => {
-  const [comment, setComment] = useState("");
+const CommentForm = ({ id }) => {
+  //* id ilgili blog id'sini prop olarak aldım
+  const [postComment, setPostComment] = useState({
+    blogId: id,
+    comment: "",
+  });
+  const { singleBlog } = useSelector((state) => state.blog);
+  // console.log(singleBlog);
 
-  const filteredComment = blogs.filter((blog) => blog?.comments);
+  const { getSingleBlogs, createComment } = useBlogCalls();
+
+  useEffect(() => {
+    getSingleBlogs(id);
+  }, []);
+
   const handleTextAreaChange = (e) => {
-    setComment(e.target.value);
+    //? blogId yi korumak ve comment kısmını güncellemek için
+    setPostComment((prev) => ({ ...prev, comment: e.target.value }));
   };
-  const handleSubmit = () => {
-    //!------> yorum istek atılacak, post
-    setComment("");
+
+  const handleSubmit = async () => {
+    await createComment(postComment);
+    await getSingleBlogs(id);
+    setPostComment({
+      blogId: id,
+      comment: "",
+    });
   };
+
   return (
     <Box>
       <Box>
         <TextareaAutosize
-          value={comment}
+          value={postComment?.comment}
           onChange={handleTextAreaChange}
           style={{
             width: "100%",
@@ -46,16 +67,18 @@ const CommentForm = ({ comments, blogs }) => {
             padding: "10px",
           }}
         />
-        <Button onClick={handleSubmit} sx={{ mt: 1 }}>
-          Add Comment
-        </Button>
+        <Box sx={{ textAlign: "center" }}>
+          <Button onClick={handleSubmit} sx={btnStyle}>
+            Add Comment
+          </Button>
+        </Box>
       </Box>
-      <Box>
-        {comments.map((item) => (
-          <Box key={item.id} sx={{ mt: 1, mb: 1 }}>
+      <Box sx={{ textAlign: "justify", maxWidth: "600px" }}>
+        {singleBlog?.comments?.map((item) => (
+          <Box key={item?.id} sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: "flex", gap: 2 }}>
               <Avatar>
-                {item?.userId?.username.slice(0, 1).toUpperCase()}
+                {item?.userId?.username?.slice(0, 1).toUpperCase()}
               </Avatar>
               <Box>
                 <Typography>{item?.userId?.username}</Typography>
@@ -64,8 +87,7 @@ const CommentForm = ({ comments, blogs }) => {
                 </Typography>
               </Box>
             </Box>
-
-            {/* <Typography>item</Typography> */}
+            <Typography>{item?.comment}</Typography>
           </Box>
         ))}
       </Box>

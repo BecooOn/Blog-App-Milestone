@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -10,22 +10,40 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CommentIcon from "@mui/icons-material/Comment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Button } from "@mui/material";
+import { Button, IconButton, Pagination } from "@mui/material";
 import { useSelector } from "react-redux";
 import useBlogCalls from "../hooks/useBlogCalls";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function MyBlog() {
   const { _id } = useSelector((state) => state.auth || {});
-  const { getBlogs, getMyBlogs } = useBlogCalls();
+  const { getBlogs, getMyBlogs, postLike } = useBlogCalls();
   const { myBlogs } = useSelector((state) => state.blog || {});
   const navigate = useNavigate();
+
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 5; //? sayfa başına blog sayısı
 
   useEffect(() => {
     getBlogs("blogs");
     getBlogs("users");
-    getMyBlogs(_id); //* Kullanıcı _id'sine göre bloglar alınıyor
+    getMyBlogs(_id); //? Kullanıcı _id'sine göre bloglar almak için
   }, []);
+
+  //? pagination işlemi
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
+
+  //? Mevcut sayfadaki blogları göstermek için slice
+  const startIndex = (page - 1) * itemsPerPage;
+  const selectedBlogs = myBlogs.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleLikes = async (itemId) => {
+    await postLike(itemId);
+    await getMyBlogs(_id);
+    // console.log("worked");
+  };
 
   return (
     <Box
@@ -56,7 +74,7 @@ export default function MyBlog() {
               bgcolor: "background.paper",
             }}
           >
-            {myBlogs.map((item) => (
+            {selectedBlogs.map((item) => (
               <React.Fragment key={item._id}>
                 <ListItem
                   sx={{
@@ -111,12 +129,23 @@ export default function MyBlog() {
                             <CommentIcon />
                             {item.comments.length}
                           </Box>
-                          <Box>
-                            <FavoriteBorderIcon />
-                            {item.likes.length}
-                            <FavoriteIcon sx={{ color: "red" }} />
-                          </Box>
-                          <span style={{fontSize:"10px",fontWeight:100,}}><i>{item.isPublish ? "Published": "Drafted"}</i></span>
+                          <IconButton
+                            aria-label="add to favorites"
+                            onClick={() => handleLikes(item?._id)}
+                          >
+                            <FavoriteIcon
+                              sx={{
+                                cursor: "pointer",
+                                color: item?.likes?.includes(_id)
+                                  ? "red"
+                                  : "gray",
+                              }}
+                            />
+                            {item?.likes?.length}
+                          </IconButton>
+                          <span style={{ fontSize: "10px", fontWeight: 100 }}>
+                            <i>{item.isPublish ? "Published" : "Drafted"}</i>
+                          </span>
                         </Box>
                       </Box>
                     }
@@ -126,6 +155,15 @@ export default function MyBlog() {
               </React.Fragment>
             ))}
           </List>
+          <Box sx={{ display: "flex", justifyContent: "center", m: 4 }}>
+            <Pagination
+              count={Math.ceil(myBlogs.length / itemsPerPage)}
+              page={page}
+              onChange={handlePageChange}
+              variant="outlined"
+              color="primary"
+            />
+          </Box>
         </Grid>
       </Box>
     </Box>
