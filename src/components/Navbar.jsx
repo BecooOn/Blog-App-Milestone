@@ -1,4 +1,5 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,10 +12,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png";
 import { useSelector } from "react-redux";
 import useAuthCalls from "../hooks/useAuthCalls";
+import logo from "../assets/logo.png";
 
 const pages = ["Home", "About", "New blog"];
 const settings = ["Profile", "My Blogs", "Logout"];
@@ -22,17 +22,31 @@ const loginSet = ["Login"];
 
 function Navbar() {
   const { username, image } = useSelector((state) => state.auth);
-  // console.log(username);
-  // console.log(image);
   const { logout } = useAuthCalls();
-
-  const [anchorElNav, setAnchorElNav] =useState(null);
+  const [activePage, setActivePage] = useState("Home");
+  const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); //? Hangi sayfada olduğumuzu belirlemek için; çünkü activePage de style değişikliklerini olduğumuz sayfayı bilerek ayarlamak için gerekli
+
+  useEffect(() => {
+    //?useEffect ile route değişikliklerini izleyerek activePage'i güncellemek için
+    const path = location.pathname;
+    if (path === "/") {
+      setActivePage("Home");
+    } else if (path === "/about") {
+      setActivePage("About");
+    } else if (path === "/new-blog") {
+      setActivePage("New blog");
+    } else {
+      setActivePage(null);
+    }
+  }, [location]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -46,15 +60,15 @@ function Navbar() {
   };
 
   const handlePage = (page) => {
-    // console.log(page);
     if (page.toLowerCase() === "home") {
       navigate("/");
     } else if (page.toLowerCase() === "about") {
       navigate("/about");
     } else if (page.toLowerCase() === "new blog") {
-      //? Kullanıcı kontrolü için username
+      sessionStorage.setItem("activePage", page); //? login değilken new-blog tıklanıldığında bu veriyi saklamak ve login olunca new-blog sayfasına girmek için
       if (username) {
         navigate("/new-blog");
+        sessionStorage.removeItem("activePage");
       } else {
         navigate("/login");
       }
@@ -68,6 +82,7 @@ function Navbar() {
       navigate("/my-blog");
     } else if (setting.toLowerCase() === "logout") {
       logout();
+      setActivePage("Home");
     } else if (setting.toLowerCase() === "login") {
       navigate("/login");
     }
@@ -151,7 +166,11 @@ function Navbar() {
                     handlePage(page);
                     handleCloseNavMenu();
                   }}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    color: activePage === page ? "orange" : "white",
+                    borderBottom:
+                      activePage === page ? "2px solid orange" : "none",
+                  }}
                 >
                   {page}
                 </Button>

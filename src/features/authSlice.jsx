@@ -63,13 +63,30 @@ const authSlice = createSlice({
     },
     logoutSuccess: (state) => {
       state.loading = false;
-      state.username = "";
       state.token = "";
-      // return initialState;
+      state.username = "";
+      state.password = "";
+      state.email = "";
+      state.firstName = "";
+      state.lastName = "";
+      state.image = "";
+      state.city = "";
+      state.bio = "";
+      state._id = "";
     },
 
-    getDeleteSuccess: (state) =>{
-      return initialState;
+    getDeleteSuccess: (state) => {
+      state.loading = false;
+      state.token = "";
+      state.username = "";
+      state.password = "";
+      state.email = "";
+      state.firstName = "";
+      state.lastName = "";
+      state.image = "";
+      state.city = "";
+      state.bio = "";
+      state._id = "";
     },
     fetchFail: (state) => {
       state.loading = false;

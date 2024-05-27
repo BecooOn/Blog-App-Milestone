@@ -86,14 +86,14 @@ const useBlogCalls = () => {
     try {
       const { data } = await axiosToken.get(`/blogs/${id}/getLike`);
       // console.log(data);
-      getSingleBlog(id);
+      // getSingleBlog(id);
     } catch (error) {
       dispatch(fetchFail());
       // console.log(error);
     }
   };
 
-  //!-----------------Create işlemi-----------
+  //!-----------------CreateBlog işlemi-----------
   const createBlog = async (endpoint, information) => {
     dispatch(fetchStart());
     try {
@@ -112,7 +112,7 @@ const useBlogCalls = () => {
   const getComments = async () => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosToken(`/comments/?limit=100`);
+      const { data } = await axiosToken(`/comments/?limit=1000`);
       dispatch(getCommentsSuccess(data));
     } catch (error) {
       dispatch(fetchFail());
@@ -121,16 +121,16 @@ const useBlogCalls = () => {
   };
 
   //!-----------------Delete comments-----------
-  const deleteComment = async (id) => {
+  const deleteComment = async (commentId, blogID) => {
     dispatch(fetchStart());
     try {
-      await axiosToken.delete(`/comments/${id}`);
-      getSingleBlog(id);
+      await axiosToken.delete(`/comments/${commentId}`);
+      getSingleBlog(blogID);
       toastSuccessNotify("Comment was deleted successfully!");
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`Oops! there is something wrong while deleting comment`);
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -140,8 +140,9 @@ const useBlogCalls = () => {
     try {
       await axiosToken.post("/comments/", information);
       toastSuccessNotify(`Comment was added successfully!`);
-      await getComments();
-      await getBlogs("comments");
+      // await getComments();
+      // await getBlogs("comments");
+      getSingleBlog(information.blogId);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(
@@ -238,7 +239,6 @@ const useBlogCalls = () => {
     promiseAllBlogs,
     deleteBlog,
   };
-  
 };
 
 export default useBlogCalls;

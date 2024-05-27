@@ -19,18 +19,22 @@ const Login = () => {
 
   //? async-await kullnılmaz ise dashboard a yönlendirme yapar
   const handleLogin = async (values, actions) => {
-    await login(values);
+    let savedPage = sessionStorage.getItem("activePage");
+    savedPage && (savedPage = "new-blog");
+    
+    await login(values, savedPage); 
     actions.resetForm();
     actions.setSubmitting(false);
-
+  
     const lastClickedBlogId = sessionStorage.getItem("lastClickedBlogId");
     if (lastClickedBlogId) {
       navigate(`/detail/${lastClickedBlogId}`);
       sessionStorage.removeItem("lastClickedBlogId");
     } else {
-      navigate("/");
+      navigate(`/${savedPage}` || "/");
     }
   };
+  
 
   return (
     <Container maxWidth="lg">
@@ -107,7 +111,10 @@ const Login = () => {
           ></Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Button onClick={()=>navigate("/register")} sx={accountQuestionStyle}>
+            <Button
+              onClick={() => navigate("/register")}
+              sx={accountQuestionStyle}
+            >
               Do you have not an account?
             </Button>
           </Box>

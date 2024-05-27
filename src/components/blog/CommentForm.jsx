@@ -39,9 +39,9 @@ const CommentForm = ({ id }) => {
   });
   const [editCommentId, setEditCommentId] = useState(null);
 
-  useEffect(() => {
-    getSingleBlog(blogID);
-  }, []);
+  // useEffect(() => {
+  //   getSingleBlog(blogID);
+  // }, []);
 
   const handleCommentEdit = (commentId, commentText) => {
     setEditCommentId(commentId);
@@ -80,7 +80,7 @@ const CommentForm = ({ id }) => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteComment(commentId);
+        deleteComment(commentId,blogID);
       } else {
         Swal.fire("Canceled", "Comment deletion has been cancelled!");
       }

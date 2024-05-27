@@ -24,8 +24,10 @@ const Detail = () => {
   const { id } = useParams(); //? ilgili id ye sahip blog için
 
   const { _id, error } = useSelector((state) => state.auth); //? singleBlog içerisndeki userId ile login olan userId aynı  olup olmadığı kontrol ve buna göre update delete işlemleri yapıp yapamayacağını kontrol ediyoruz
-  const { blogs, comments, singleBlog } = useSelector((state) => state.blog);
+  const { blogs, comments, singleBlog,likes } = useSelector((state) => state.blog);
   // console.log(singleBlog);
+  // console.log(likes?.countOfLikes);
+  console.log(comments);
 
   const authorizedAuthor = singleBlog?.userId?._id === _id;
   // console.log(authorizedAuthor);
@@ -34,7 +36,7 @@ const Detail = () => {
 
   useEffect(() => {
     getSingleBlog(id);
-    promiseAllBlogs();
+    // promiseAllBlogs();
   }, [id]);
 
   const handleExpandClick = () => {
@@ -193,10 +195,10 @@ const Detail = () => {
                 <ThumbUpAltIcon
                   sx={{
                     cursor: "pointer",
-                    color: singleBlog?.likes?.includes(_id) ? "red" : "gray",
+                    color: likes?.didUserLike ? "red" : "gray",
                   }}
                 />
-                {singleBlog?.likes?.length}
+                {likes?.countOfLikes}
               </IconButton>
             </Box>
           </Box>

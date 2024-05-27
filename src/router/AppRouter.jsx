@@ -15,16 +15,6 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 const AppRouter = () => {
-  // //! login ve register aynı path olduğu için, refresh yapınca login sayfasına dönmemesi için sessionStorage'da state'i tuttum
-  // const [toggle, setToggle] = useState(()=>{
-  //   const savedToggle = sessionStorage.getItem("toggle");
-  //   return savedToggle !== null ? JSON.parse(savedToggle) : false;
-  // });
-
-  // useEffect(()=>{
-  //   sessionStorage.setItem("toggle", JSON.stringify(toggle));
-  // },[])
-
   return (
     <Router>
       <Navbar />
