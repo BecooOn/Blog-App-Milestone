@@ -12,13 +12,13 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { btnStyle, expandIcons } from "../styles/globalStyles";
 import CommentForm from "../components/blog/CommentForm";
 import Swal from "sweetalert2";
-import UpdateModal from "../components/blog/UpdateModal";
+import UpdateBlogModal from "../components/blog/UpdateBlogModal";
 import { ErrorMessage } from "../components/DataFetchMessages";
 
 const Detail = () => {
   const [expanded, setExpanded] = useState(false);
   const [openComments, setOpenComments] = useState(false);
-  const [open, setOpen] = useState(false); //? updateModal için
+  const [open, setOpen] = useState(false); //? UpdateBlogModal için
   const { promiseAllBlogs, getSingleBlog, deleteBlog, postLike, getLike } =
     useBlogCalls();
   const { id } = useParams(); //? ilgili id ye sahip blog için
@@ -221,7 +221,7 @@ const Detail = () => {
           ) : null}
         </Box>
         {openComments ? <CommentForm id={id} /> : null}
-        <UpdateModal
+        <UpdateBlogModal
           handleUpdateBlogClose={handleUpdateBlogClose}
           open={open}
           singleBlog={singleBlog}

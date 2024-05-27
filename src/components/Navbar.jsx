@@ -1,4 +1,4 @@
-import * as React from "react";
+import React,{useState,useEffect} from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -24,15 +24,11 @@ function Navbar() {
   const { username, image } = useSelector((state) => state.auth);
   // console.log(username);
   // console.log(image);
-  const { logout, getUser } = useAuthCalls();
+  const { logout } = useAuthCalls();
 
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] =useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
-
-  React.useEffect(() => {
-    getUser();
-  }, []);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

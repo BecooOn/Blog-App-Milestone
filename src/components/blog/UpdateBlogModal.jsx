@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { modalStyle } from "../../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
 
-const UpdateModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
+const UpdateBlogModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
   const [info, setInfo] = useState({
     category: "",
     title: "",
@@ -169,4 +169,4 @@ const UpdateModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
   );
 };
 
-export default UpdateModal;
+export default UpdateBlogModal;

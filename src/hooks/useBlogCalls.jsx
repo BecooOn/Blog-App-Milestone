@@ -120,6 +120,20 @@ const useBlogCalls = () => {
     }
   };
 
+  //!-----------------Delete comments-----------
+  const deleteComment = async (id) => {
+    dispatch(fetchStart());
+    try {
+      await axiosToken.delete(`/comments/${id}`);
+      getSingleBlog(id);
+      toastSuccessNotify("Comment was deleted successfully!");
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(`Oops! there is something wrong while deleting comment`);
+      console.error(error)
+    }
+  };
+
   //!-----------------Comment create-----------
   const createComment = async (information) => {
     dispatch(fetchStart());
@@ -132,6 +146,21 @@ const useBlogCalls = () => {
       dispatch(fetchFail());
       toastErrorNotify(
         `Oops! there is something wrong while adding the comment`
+      );
+    }
+  };
+
+  //!---------------Update comment---------------
+  const updateComment = async (commentID, information) => {
+    dispatch(fetchStart());
+    try {
+      await axiosToken.patch(`/comments/${commentID}`, information);
+      toastSuccessNotify("Comment was updated successfully!");
+      getSingleBlog(information?.blogID);
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify(
+        "Oops! there is something wrong while updating for comment!"
       );
     }
   };
@@ -203,10 +232,13 @@ const useBlogCalls = () => {
     createBlog,
     updateBlog,
     getComments,
+    updateComment,
+    deleteComment,
     createComment,
     promiseAllBlogs,
     deleteBlog,
   };
+  
 };
 
 export default useBlogCalls;
