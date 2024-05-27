@@ -39,7 +39,7 @@ const useAuthCalls = () => {
       const { data } = await axiosToken.post("/users/", userData);
       dispatch(registerSuccess(data));
       toastSuccessNotify("New user successfully registered!");
-      navigate("/auth");
+      navigate("/login");
     } catch (error) {
       toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());

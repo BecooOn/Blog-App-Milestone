@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import About from "../pages/About";
 import Dashboard from "../pages/Dashboard";
@@ -19,23 +15,24 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
 const AppRouter = () => {
-  //! login ve register aynı path olduğu için, refresh yapınca login sayfasına dönmemesi için sessionStorage'da state'i tuttum
-  const [toggle, setToggle] = useState(()=>{
-    const savedToggle = sessionStorage.getItem("toggle");
-    return savedToggle !== null ? JSON.parse(savedToggle) : false;
-  });
+  // //! login ve register aynı path olduğu için, refresh yapınca login sayfasına dönmemesi için sessionStorage'da state'i tuttum
+  // const [toggle, setToggle] = useState(()=>{
+  //   const savedToggle = sessionStorage.getItem("toggle");
+  //   return savedToggle !== null ? JSON.parse(savedToggle) : false;
+  // });
 
-  useEffect(()=>{
-    sessionStorage.setItem("toggle", JSON.stringify(toggle));
-  },[])
+  // useEffect(()=>{
+  //   sessionStorage.setItem("toggle", JSON.stringify(toggle));
+  // },[])
 
   return (
     <Router>
-      <Navbar setToggle={setToggle}/>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Dashboard setToggle={setToggle}/>} />
-        <Route path="auth" element={toggle ? <Register setToggle={setToggle}/> : <Login  setToggle={setToggle}/>} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
         <Route path="/" element={<PrivateRouter />}>
           <Route path="detail/:id" element={<Detail />} />
           <Route path="new-blog" element={<NewBlog />} />

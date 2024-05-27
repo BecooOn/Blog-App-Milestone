@@ -10,12 +10,12 @@ import useAuthCalls from "../hooks/useAuthCalls";
 import logo from "../assets/logo.png";
 import { Button } from "@mui/material";
 import { accountQuestionStyle } from "../styles/globalStyles";
+import { useNavigate } from "react-router-dom";
 
-const Register = ({ setToggle }) => {
+const Register = () => {
   const { register } = useAuthCalls();
-  const handleRegister = () => {
-    setToggle(false);
-  };
+  const navigate = useNavigate();
+
   return (
     <Container maxWidth="lg">
       <Grid
@@ -101,13 +101,13 @@ const Register = ({ setToggle }) => {
               register(values);
               actions.resetForm();
               actions.setSubmitting(false);
-              setToggle(false); //? register başarılı olursa login sayfası görünmesi için
+              navigate("/");
             }}
             component={(props) => <RegisterForm {...props} />}
           ></Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Button sx={accountQuestionStyle} onClick={handleRegister}>
+            <Button sx={accountQuestionStyle} onClick={() => navigate("/login")}>
               Do you have an account?
             </Button>
           </Box>

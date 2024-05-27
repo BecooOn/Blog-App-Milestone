@@ -1,14 +1,12 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useBlogCalls from "../../hooks/useBlogCalls";
 import { btnStyle } from "../../styles/globalStyles";
+import CommentEditor from "./CommentEditor";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Divider from "@mui/material/Divider";
 
 const formatDate = (isoString) => {
   const options = {
@@ -23,55 +21,19 @@ const formatDate = (isoString) => {
 
 const CommentForm = ({ id }) => {
   //* id ilgili blog id'sini prop olarak aldım
-  const [postComment, setPostComment] = useState({
-    blogId: id,
-    comment: "",
-  });
   const { singleBlog } = useSelector((state) => state.blog);
   // console.log(singleBlog);
 
-  const { getSingleBlogs, createComment } = useBlogCalls();
+  const { getSingleBlog } = useBlogCalls();
 
   useEffect(() => {
-    getSingleBlogs(id);
+    getSingleBlog(id);
   }, []);
-
-  const handleTextAreaChange = (e) => {
-    //? blogId yi korumak ve comment kısmını güncellemek için
-    setPostComment((prev) => ({ ...prev, comment: e.target.value }));
-  };
-
-  const handleSubmit = async () => {
-    await createComment(postComment);
-    await getSingleBlogs(id);
-    setPostComment({
-      blogId: id,
-      comment: "",
-    });
-  };
 
   return (
     <Box>
       <Box>
-        <TextareaAutosize
-          value={postComment?.comment}
-          onChange={handleTextAreaChange}
-          style={{
-            width: "100%",
-            border: "1px solid #ccc",
-            outline: "none",
-            resize: "none",
-            textAlign: "justify",
-            lineHeight: "1.5",
-            height: "5rem",
-            padding: "10px",
-          }}
-        />
-        <Box sx={{ textAlign: "center" }}>
-          <Button onClick={handleSubmit} sx={btnStyle}>
-            Add Comment
-          </Button>
-        </Box>
+        <CommentEditor id={id} />
       </Box>
       <Box sx={{ textAlign: "justify", maxWidth: "600px" }}>
         {singleBlog?.comments?.map((item) => (
@@ -85,9 +47,15 @@ const CommentForm = ({ id }) => {
                 <Typography sx={{ fontSize: "12px", color: "gray" }}>
                   {formatDate(item?.createdAt)}
                 </Typography>
+                <Box>
+                    <BorderColorIcon />
+                    <DeleteForeverIcon />
+                    "yapım aşamasında"
+                </Box>
               </Box>
             </Box>
             <Typography>{item?.comment}</Typography>
+            <Divider />
           </Box>
         ))}
       </Box>

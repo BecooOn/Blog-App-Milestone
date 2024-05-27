@@ -20,7 +20,7 @@ const pages = ["Home", "About", "New blog"];
 const settings = ["Profile", "My Blogs", "Logout"];
 const loginSet = ["Login"];
 
-function Navbar({ setToggle }) {
+function Navbar() {
   const { username, image } = useSelector((state) => state.auth);
   // console.log(username);
   // console.log(image);
@@ -60,8 +60,7 @@ function Navbar({ setToggle }) {
       if (username) {
         navigate("/new-blog");
       } else {
-        setToggle(false);
-        navigate("/auth");
+        navigate("/login");
       }
     }
   };
@@ -74,8 +73,7 @@ function Navbar({ setToggle }) {
     } else if (setting.toLowerCase() === "logout") {
       logout();
     } else if (setting.toLowerCase() === "login") {
-      setToggle(false);
-      navigate("/auth");
+      navigate("/login");
     }
   };
 

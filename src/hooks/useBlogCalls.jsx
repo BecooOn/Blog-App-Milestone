@@ -1,5 +1,3 @@
-//! custom hook alanı
-
 import { useDispatch } from "react-redux";
 import useAxios from "./useAxios";
 import {
@@ -27,23 +25,24 @@ const useBlogCalls = () => {
       dispatch(getBlogSuccess({ data, path: endpoint }));
     } catch (error) {
       dispatch(fetchFail());
+      // console.log(error);
     }
   };
+
   //!-------Pagination-------------
   const getPaginatedBlogs = async (page) => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosPublic(`/blogs?limit=5&page=${page}`);
-      // console.log(data?.data);
-      // console.log(data?.details?.pages?.total);
       dispatch(getPaginatedBlogsSuccess({ data }));
     } catch (error) {
       dispatch(fetchFail());
+      // console.log(error);
     }
   };
 
   //!---------Single Blog-----------------------
-  const getSingleBlogs = async (id) => {
+  const getSingleBlog = async (id) => {
     dispatch(fetchStart());
     try {
       const {
@@ -52,6 +51,7 @@ const useBlogCalls = () => {
       dispatch(getSingleBlogSuccess({ data }));
     } catch (error) {
       dispatch(fetchFail());
+      // console.log(error);
     }
   };
 
@@ -62,22 +62,34 @@ const useBlogCalls = () => {
       const {
         data: { data },
       } = await axiosToken(`/blogs?author=${id}`);
-      console.log(data);
       dispatch(getBlogSuccess({ data, path: "myBlogs" }));
     } catch (error) {
       dispatch(fetchFail());
+      // console.log(error);
     }
   };
 
-  //!-------------Like unlike için-------------
+  //!-------------Like ve unlike işlemleri için-------------
   const postLike = async (id) => {
+    dispatch(fetchStart());
     try {
       const { data } = await axiosToken.post(`/blogs/${id}/postLike`, {});
-      // console.log(data);
       dispatch(likeSuccess(data));
-      // await getBlogs("blogs");
     } catch (error) {
-      console.log(error);
+      dispatch(fetchFail());
+      // console.log(error);
+    }
+  };
+
+  const getLike = async (id) => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosToken.get(`/blogs/${id}/getLike`);
+      // console.log(data);
+      getSingleBlog(id);
+    } catch (error) {
+      dispatch(fetchFail());
+      // console.log(error);
     }
   };
 
@@ -117,15 +129,12 @@ const useBlogCalls = () => {
       await getComments();
       await getBlogs("comments");
     } catch (error) {
-      // console.error("Error while adding comment:", error.response || error.message || error);
       dispatch(fetchFail());
       toastErrorNotify(
         `Oops! there is something wrong while adding the comment`
       );
     }
   };
-  
-
 
   //!-------------Veri silme işlemi---------------------
   const deleteBlog = async (endpoint, id) => {
@@ -142,7 +151,7 @@ const useBlogCalls = () => {
     }
   };
 
-  //!-----------Verilerin güncellenmesi işlemi-----
+  //!-----------Verilerin güncellenmesi işlemi-----
   const updateBlog = async (endpoint, _id, information) => {
     dispatch(fetchStart());
     try {
@@ -187,9 +196,10 @@ const useBlogCalls = () => {
   return {
     getBlogs,
     getPaginatedBlogs,
-    getSingleBlogs,
+    getSingleBlog,
     getMyBlogs,
     postLike,
+    getLike,
     createBlog,
     updateBlog,
     getComments,

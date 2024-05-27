@@ -13,13 +13,9 @@ import LoginForm, { loginSchema } from "../components/auth/LoginForm";
 import { Button } from "@mui/material";
 import { accountQuestionStyle } from "../styles/globalStyles";
 
-const Login = ({ setToggle }) => {
+const Login = () => {
   const { login } = useAuthCalls();
   const navigate = useNavigate();
-
-  const handleRegister = () => {
-    setToggle(true);
-  };
 
   //? async-await kullnılmaz ise dashboard a yönlendirme yapar
   const handleLogin = async (values, actions) => {
@@ -111,7 +107,7 @@ const Login = ({ setToggle }) => {
           ></Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Button onClick={handleRegister} sx={accountQuestionStyle}>
+            <Button onClick={()=>navigate("/register")} sx={accountQuestionStyle}>
               Do you have not an account?
             </Button>
           </Box>
