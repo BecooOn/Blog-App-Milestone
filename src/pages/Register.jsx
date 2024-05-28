@@ -1,3 +1,4 @@
+import React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
@@ -15,6 +16,14 @@ import { useNavigate } from "react-router-dom";
 const Register = () => {
   const { register } = useAuthCalls();
   const navigate = useNavigate();
+
+  const handleRegister = async (values, actions) => {
+    await register(values);
+    actions.resetForm();
+    actions.setSubmitting(false);
+    //? register sonrası ana sayfaya yönlendirmek için
+    navigate("/");
+  };
 
   return (
     <Container maxWidth="lg">
@@ -97,17 +106,15 @@ const Register = () => {
               bio: "",
             }}
             validationSchema={registerSchema}
-            onSubmit={(values, actions) => {
-              register(values);
-              actions.resetForm();
-              actions.setSubmitting(false);
-              navigate("/");
-            }}
+            onSubmit={handleRegister}
             component={(props) => <RegisterForm {...props} />}
           ></Formik>
 
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Button sx={accountQuestionStyle} onClick={() => navigate("/login")}>
+            <Button
+              sx={accountQuestionStyle}
+              onClick={() => navigate("/login")}
+            >
               Do you have an account?
             </Button>
           </Box>

@@ -20,11 +20,19 @@ const useAuthCalls = () => {
   //!-----------LOGIN--------------
   const login = async (userData) => {
     dispatch(fetchStart());
+    console.log(userData);
     try {
       const { data } = await axiosPublic.post("/auth/login", userData);
       dispatch(loginSuccess(data));
       toastSuccessNotify("Login is successful");
-      navigate("/");
+
+      //? sessionStorage de activePage varsa activePage e  eğer yoksa ana sayfaya (/) yönlendirmek için.
+      let activePage = sessionStorage.getItem("activePage");
+      if (!activePage || activePage === "null") {
+        activePage = "/";
+      }
+      navigate(activePage);
+      sessionStorage.removeItem("activePage");
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify("Login is not successful");
@@ -37,14 +45,49 @@ const useAuthCalls = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.post("/users/", userData);
-      dispatch(registerSuccess(data));
+      dispatch(registerSuccess(data.data));
       toastSuccessNotify("New user successfully registered!");
-      await login({ email: userData.email, password: userData.password });
+      //? sessionStorage de activePage varsa activePage e  eğer yoksa ana sayfaya (/) yönlendirmek için.
+      let activePage = sessionStorage.getItem("activePage");
+      if (!activePage || activePage === "null") {
+        activePage = "/";
+      } else {
+        navigate(activePage);
+      }
+
+      sessionStorage.removeItem("activePage");
+      // login(data)
     } catch (error) {
       toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());
     }
   };
+
+  // const register = async (userData) => {
+  //   dispatch(fetchStart());
+  //   let registerUserData = { email: userData.email, password: userData.password }
+  //   console.log(userData.email);
+  //   console.log(userData.password);
+  //   try {
+  //     const { data } = await axiosToken.post("/users/", userData);
+  //     dispatch(registerSuccess(data));
+  //     toastSuccessNotify("New user successfully registered!");
+  //     console.log(data);
+  //     await login(registerUserData);
+  //   } catch (error) {
+  //     if (error.response) {
+  //       // Sunucudan dönen bir yanıt varsa (HTTP durum kodu 4xx veya 5xx)
+  //       console.error("Error Response:", error.response);
+  //     } else if (error.request) {
+  //       // Sunucudan hiçbir yanıt alınmadıysa
+  //       console.error("No Response:", error.request);
+  //     } else {
+  //       // İstek ayarları sırasında bir hata meydana geldiyse
+  //       console.error("Error Message:", error.message);
+  //     }
+  //     dispatch(fetchFail());
+  //   }
+  // };
 
   //!-----------LOGOUT--------------
   const logout = async () => {
@@ -54,6 +97,7 @@ const useAuthCalls = () => {
       dispatch(logoutSuccess());
       toastSuccessNotify("Logout is successful");
       navigate("/");
+      sessionStorage.removeItem("activePage");
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify("Logout is not successful");

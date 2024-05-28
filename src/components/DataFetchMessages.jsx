@@ -18,10 +18,18 @@ export const NoDataMessage = () => {
   )
 }
 
-// export const CardSkeleton = ({ children }) => {
-//   return (
-//     <Stack spacing={1} sx={{ mt: 3 }}>
-//       <Skeleton variant="rectangular">{children}</Skeleton>
-//     </Stack>
-//   )
-// }
+export const NoBlogMessage = () => {
+  return (
+    <Alert sx={{ mt: 3 }} severity="warning">
+      There is no blog
+    </Alert>
+  )
+}
+
+export const CardSkeleton = ({ children }) => {
+  return (
+    <Stack spacing={1} sx={{ mt: 3 }}>
+      <Skeleton variant="rectangular">{children}</Skeleton>
+    </Stack>
+  )
+}

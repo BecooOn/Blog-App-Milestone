@@ -65,7 +65,7 @@ function Navbar() {
     } else if (page.toLowerCase() === "about") {
       navigate("/about");
     } else if (page.toLowerCase() === "new blog") {
-      sessionStorage.setItem("activePage", page); //? login değilken new-blog tıklanıldığında bu veriyi saklamak ve login olunca new-blog sayfasına girmek için
+      sessionStorage.setItem("activePage", "/new-blog");
       if (username) {
         navigate("/new-blog");
         sessionStorage.removeItem("activePage");
@@ -74,6 +74,7 @@ function Navbar() {
       }
     }
   };
+  
 
   const handleProfile = (setting) => {
     if (setting.toLowerCase() === "profile") {
@@ -83,6 +84,7 @@ function Navbar() {
     } else if (setting.toLowerCase() === "logout") {
       logout();
       setActivePage("Home");
+      sessionStorage.removeItem("activePage");
     } else if (setting.toLowerCase() === "login") {
       navigate("/login");
     }

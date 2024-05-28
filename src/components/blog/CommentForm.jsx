@@ -39,6 +39,10 @@ const CommentForm = ({ id }) => {
   });
   const [editCommentId, setEditCommentId] = useState(null);
 
+  useEffect(() => {
+    getComments();
+  }, [])
+  
   const filteredComments = comments.filter(
     (comment) => comment.blogId === blogID
   );

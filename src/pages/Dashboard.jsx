@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useBlogCalls from "../hooks/useBlogCalls";
 import Card from "../components/blog/Card";
-import { Box, Pagination, Stack } from "@mui/material";
-import { Translate } from "@mui/icons-material";
+import Box from "@mui/material/Box";
 
 export default function Dashboard() {
   const { getBlogs, getPaginatedBlogs } = useBlogCalls();

@@ -13,7 +13,8 @@ import { btnStyle, expandIcons } from "../styles/globalStyles";
 import CommentForm from "../components/blog/CommentForm";
 import Swal from "sweetalert2";
 import UpdateBlogModal from "../components/blog/UpdateBlogModal";
-import { ErrorMessage } from "../components/DataFetchMessages";
+import { ErrorMessage, NoDataMessage } from "../components/DataFetchMessages";
+import loadingGIF from "../assets/loading.gif";
 
 const Detail = () => {
   const [expanded, setExpanded] = useState(false);
@@ -24,10 +25,12 @@ const Detail = () => {
   const { id } = useParams(); //? ilgili id ye sahip blog için
 
   const { _id, error } = useSelector((state) => state.auth); //? singleBlog içerisndeki userId ile login olan userId aynı  olup olmadığı kontrol ve buna göre update delete işlemleri yapıp yapamayacağını kontrol ediyoruz
-  const { blogs, comments, singleBlog,likes } = useSelector((state) => state.blog);
+  const { blogs, comments, singleBlog, likes, loading } = useSelector(
+    (state) => state.blog
+  );
   // console.log(singleBlog);
   // console.log(likes?.countOfLikes);
-  console.log(comments);
+  // console.log(comments);
 
   const authorizedAuthor = singleBlog?.userId?._id === _id;
   // console.log(authorizedAuthor);
@@ -36,8 +39,10 @@ const Detail = () => {
 
   useEffect(() => {
     getSingleBlog(id);
+    // postLike(id);
+    getLike(id);
     // promiseAllBlogs();
-  }, [id]);
+  }, []);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -78,158 +83,189 @@ const Detail = () => {
     });
   };
 
-  const handleLikes = async (itemId) => {
-    await postLike(itemId);
-    await getLike(itemId);
+  const handleLikes = async (singleBlogId) => {
+    await postLike(singleBlogId);
+    await getLike(singleBlogId);
     // await getSingleBlog(id);
   };
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          // border: "2px solid red",
-          p: 2,
-          flexDirection: "column",
-        }}
-      >
+      {loading ? (
         <Box
           sx={{
-            textAlign: "center",
-            maxWidth: "600px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mt: "40px",
           }}
         >
+          <img src={loadingGIF} alt="loading" width="250px" />
+        </Box>
+      ) : error ? (
+        <Box
+          sx={{
+            display: "flex",
+            // alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <NoDataMessage />
+        </Box>
+      ) : (
+        <>
           <Box
-            component="img"
-            src={`${singleBlog?.image}`}
-            alt="img"
             sx={{
-              width: "75%",
-              borderRadius: "10px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              // border: "2px solid red",
+              p: 2,
+              flexDirection: "column",
             }}
-          />
-          <Box>
-            <Box
-              sx={{ display: "flex", justifyContent: "center", gap: 3, p: 1 }}
-            >
-              <Avatar>
-                {singleBlog?.userId?.username.slice(0, 1).toUpperCase()}
-              </Avatar>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography component="span" sx={{ fontSize: "14px" }}>
-                  {singleBlog?.userId?.username}
-                </Typography>
-                <Typography component="span" sx={{ fontSize: "14px" }}>
-                  {new Date(singleBlog?.createdAt).toLocaleString("tr-TR")}
-                </Typography>
-              </Box>
-            </Box>
-            <Typography variant="h5" sx={{ textAlign: "center", my: 2 }}>
-              {singleBlog?.title}
-            </Typography>
+          >
             <Box
               sx={{
                 textAlign: "center",
-                my: 2,
-                position: "relative",
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                WebkitLineClamp: expanded ? "none" : 3,
-                maxHeight: expanded ? "none" : "8rem",
+                maxWidth: "600px",
               }}
             >
-              <Typography
-                component="div"
-                sx={{ display: "block", textAlign: "justify", my: 1 }}
-              >
-                {singleBlog?.content}
-              </Typography>
-              <IconButton
+              <Box
+                component="img"
+                src={`${singleBlog?.image}`}
+                alt="img"
                 sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
+                  width: "75%",
+                  borderRadius: "10px",
                 }}
-              >
-                {expanded ? (
-                  <ExpandLessIcon
-                    sx={expandIcons}
-                    onClick={handleExpandClick}
-                  />
-                ) : (
-                  <ExpandMoreIcon
-                    sx={expandIcons}
-                    onClick={handleExpandClick}
-                  />
-                )}
-              </IconButton>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                gap: 3,
-                my: 2,
-              }}
-            >
+              />
               <Box>
-                <VisibilityIcon />
-                {singleBlog?.countOfVisitors}
-              </Box>
-              <Box>
-                <CommentIcon
-                  sx={{ cursor: "pointer" }}
-                  onClick={handleComments}
-                />
-                {singleBlog?.comments?.length}
-              </Box>
-              <IconButton
-                aria-label="add to favorites"
-                onClick={() => handleLikes(singleBlog?._id)}
-              >
-                <ThumbUpAltIcon
+                <Box
                   sx={{
-                    cursor: "pointer",
-                    color: likes?.didUserLike ? "red" : "gray",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: 3,
+                    p: 1,
                   }}
-                />
-                {likes?.countOfLikes}
-              </IconButton>
+                >
+                  <Avatar>
+                    {singleBlog?.userId?.username.slice(0, 1).toUpperCase()}
+                  </Avatar>
+                  <Box sx={{ display: "flex", flexDirection: "column" }}>
+                    <Typography component="span" sx={{ fontSize: "14px" }}>
+                      {singleBlog?.userId?.username}
+                    </Typography>
+                    <Typography component="span" sx={{ fontSize: "14px" }}>
+                      {new Date(singleBlog?.createdAt).toLocaleString("tr-TR")}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography variant="h5" sx={{ textAlign: "center", my: 2 }}>
+                  {singleBlog?.title}
+                </Typography>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    my: 2,
+                    position: "relative",
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    WebkitLineClamp: expanded ? "none" : 3,
+                    maxHeight: expanded ? "none" : "8rem",
+                  }}
+                >
+                  <Typography
+                    component="div"
+                    sx={{ display: "block", textAlign: "justify", my: 1 }}
+                  >
+                    {singleBlog?.content}
+                  </Typography>
+                  <IconButton
+                    sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                    }}
+                  >
+                    {expanded ? (
+                      <ExpandLessIcon
+                        sx={expandIcons}
+                        onClick={handleExpandClick}
+                      />
+                    ) : (
+                      <ExpandMoreIcon
+                        sx={expandIcons}
+                        onClick={handleExpandClick}
+                      />
+                    )}
+                  </IconButton>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: 3,
+                    my: 2,
+                  }}
+                >
+                  <Box>
+                    <VisibilityIcon />
+                    {singleBlog?.countOfVisitors}
+                  </Box>
+                  <Box>
+                    <CommentIcon
+                      sx={{ cursor: "pointer" }}
+                      onClick={handleComments}
+                    />
+                    {singleBlog?.comments?.length}
+                  </Box>
+                  <IconButton
+                    aria-label="add to favorites"
+                    onClick={() => handleLikes(singleBlog?._id)}
+                  >
+                    <ThumbUpAltIcon
+                      sx={{
+                        cursor: "pointer",
+                        color: likes?.didUserLike ? "red" : "gray",
+                      }}
+                    />
+                    {likes?.countOfLikes}
+                  </IconButton>
+                </Box>
+              </Box>
             </Box>
+            <Box>
+              {authorizedAuthor ? (
+                <>
+                  <Button sx={btnStyle} onClick={handleUpdateBlogOpen}>
+                    Update Blog
+                  </Button>
+                  <Button
+                    sx={{
+                      backgroundColor: "red",
+                      color: "white",
+                      "&:hover": { backgroundColor: "orange" },
+                    }}
+                    onClick={handleDeleteBlog}
+                  >
+                    Delete Blog
+                  </Button>
+                </>
+              ) : null}
+            </Box>
+            {openComments ? <CommentForm id={id} /> : null}
+            <UpdateBlogModal
+              handleUpdateBlogClose={handleUpdateBlogClose}
+              open={open}
+              singleBlog={singleBlog}
+            />
           </Box>
-        </Box>
-        <Box>
-          {authorizedAuthor ? (
-            <>
-              <Button sx={btnStyle} onClick={handleUpdateBlogOpen}>
-                Update Blog
-              </Button>
-              <Button
-                sx={{
-                  backgroundColor: "red",
-                  color: "white",
-                  "&:hover": { backgroundColor: "orange" },
-                }}
-                onClick={handleDeleteBlog}
-              >
-                Delete Blog
-              </Button>
-            </>
-          ) : null}
-        </Box>
-        {openComments ? <CommentForm id={id} /> : null}
-        <UpdateBlogModal
-          handleUpdateBlogClose={handleUpdateBlogClose}
-          open={open}
-          singleBlog={singleBlog}
-        />
-      </Box>
-      {error && <ErrorMessage />}
+          {error && <ErrorMessage />}
+        </>
+      )}
+      {/* {error && <NoDataMessage />} */}
     </>
   );
 };

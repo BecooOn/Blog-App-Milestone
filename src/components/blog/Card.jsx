@@ -29,7 +29,7 @@ export default function Card({ page, setPage }) {
     bio,
     _id,
     loading,
-    error
+    error,
   } = useSelector((state) => state.auth);
   const {
     getPaginatedBlogs,
@@ -46,11 +46,11 @@ export default function Card({ page, setPage }) {
     getPaginatedBlogs(page);
   }, [page]);
 
-  const handleReadMore = (_id) => {
+  const handleReadMore = (blogId) => {
     if (username) {
-      navigate(`detail/${_id}`);
+      navigate(`detail/${blogId}`);
     } else {
-      sessionStorage.setItem("lastClickedBlogId", _id);
+      sessionStorage.setItem("lastClickedBlogId", blogId);
       navigate("/login");
     }
   };
@@ -59,33 +59,39 @@ export default function Card({ page, setPage }) {
     setPage(value);
   };
 
-  const handleLikes = async (itemId) => {
+  const handleLikes = async (blogId) => {
     if (username) {
-      await postLike(itemId);
-      await getLike(itemId);
-      // await getSingleBlog(itemId);
+      await postLike(blogId);
+      await getLike(blogId);
+      // await getSingleBlog(blogId);
       await getPaginatedBlogs(page);
     } else {
       navigate("/login");
     }
   };
 
-  const handleComments = async (itemId) => {
+  const handleComments = async (blogId) => {
     if (username) {
-      navigate(`detail/${itemId}`);
+      navigate(`detail/${blogId}`);
     } else {
       navigate("/login");
     }
   };
 
-  // useEffect(() => {
-  //   getPaginatedBlogs(page);
-  // }, [handleLikes]);
-
   return (
     <>
       {loading ? (
         <SkeletonCard />
+      ) : error ? (
+        <Box
+          sx={{
+            display: "flex",
+            // alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <NoDataMessage />
+        </Box>
       ) : (
         <Box
           sx={{
@@ -104,12 +110,9 @@ export default function Card({ page, setPage }) {
               sm={9}
               order={{ xs: 2, sm: 1 }}
               sx={{
-                borderTop: "1px solid gray",
-                borderRight: "1px solid gray",
-                borderLeft: "1px solid gray",
-                borderBottom: "none",
+                border: "1px solid gray",
                 p: 3,
-                height: "800px",
+                height: "1150px",
                 overflowY: "scroll",
                 "&::-webkit-scrollbar": { width: "0px" },
                 textAlign: { xs: "center", sm: "left" },
@@ -300,7 +303,6 @@ export default function Card({ page, setPage }) {
           </Box>
         </Box>
       )}
-      {error && <NoDataMessage />}
     </>
   );
 }

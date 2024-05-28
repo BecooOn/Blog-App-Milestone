@@ -17,12 +17,12 @@ const Login = () => {
   const { login } = useAuthCalls();
   const navigate = useNavigate();
 
-  //? async-await kullnılmaz ise dashboard a yönlendirme yapar
   const handleLogin = async (values, actions) => {
     let savedPage = sessionStorage.getItem("activePage");
-    savedPage && (savedPage = "new-blog");
+    //!sessionStorage'daki activePage değerinin geçerli olup olmadığını kontrol etmek için, eğer bu kontrol olmazsa 404 e gidiyor 
+    savedPage = savedPage && savedPage !== "null" ? savedPage : "/";
     
-    await login(values, savedPage); 
+    await login(values); 
     actions.resetForm();
     actions.setSubmitting(false);
   
@@ -31,10 +31,9 @@ const Login = () => {
       navigate(`/detail/${lastClickedBlogId}`);
       sessionStorage.removeItem("lastClickedBlogId");
     } else {
-      navigate(`/${savedPage}` || "/");
+      navigate(savedPage);
     }
   };
-  
 
   return (
     <Container maxWidth="lg">

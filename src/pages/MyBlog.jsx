@@ -14,7 +14,8 @@ import { useSelector } from "react-redux";
 import useBlogCalls from "../hooks/useBlogCalls";
 import { Link, useNavigate } from "react-router-dom";
 import SkeletonCard from "../components/skeleton/SkeletonCard";
-import { NoDataMessage } from "../components/DataFetchMessages";
+import { NoBlogMessage, NoDataMessage } from "../components/DataFetchMessages";
+import { btnStyle } from "../styles/globalStyles";
 
 export default function MyBlog() {
   const { _id, loading, error } = useSelector((state) => state.auth || {});
@@ -51,6 +52,29 @@ export default function MyBlog() {
     <>
       {loading ? (
         <SkeletonCard />
+      ) : error ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <NoDataMessage />
+        </Box>
+      ) : selectedBlogs.length === 0 ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column"
+          }}
+        >
+          <NoBlogMessage />
+          <Button sx={btnStyle} onClick={() => navigate("/new-blog")}>
+            Create Blog
+          </Button>
+        </Box>
       ) : (
         <Box
           sx={{
@@ -185,7 +209,6 @@ export default function MyBlog() {
           </Box>
         </Box>
       )}
-      {error && <NoDataMessage />}
     </>
   );
 }
