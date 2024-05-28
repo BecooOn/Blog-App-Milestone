@@ -12,26 +12,25 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export const registerSchema = object({
   username: string()
-    .max(20, "Kullanıcı adı 10 karakterden az olmalıdır.")
-    .required("Kullanıcı adı zorunludur"),
-  firstName: string()
-    .max(20, "İsim 20 karakterden az olmalıdır.")
-    .required("İsim zorunludur"),
-  lastName: string()
-    .max(20, "Soyisim 30 karakterden az olmalıdır.")
-    .required("Soyisim zorunludur"),
-
-  email: string()
-    .email("Lütfen geçerli bir email giriniz.")
-    .required("Email zorunludur"),
-  password: string()
-    .required("Şifre zorunludur")
-    .min(8, "Şifre en az 8 karakter olmalıdır")
-    .max(20, "Şifre en fazla 20 karakter olmalıdır")
-    .matches(/\d+/, "Şifre bir sayı içermelidir")
-    .matches(/[a-z]/, "Şifre bir küçük harf içermelidir")
-    .matches(/[A-Z]/, "Şifre bir büyük harf içermelidir")
-    .matches(/[!/[@$!%*?&]+/, "Şifre bir özel karakter içermelidir"),
+  .max(20, "Username must be less than 10 characters.")
+  .required("Username is required."),
+firstName: string()
+  .max(20, "The first name must be less than 20 characters.")
+  .required("The first name is required"),
+lastName: string()
+  .max(20, "The surname must be less than 320 characters.")
+  .required("The surname is required"),
+email: string()
+  .email("Please enter a valid email.")
+  .required("Email is required"),
+password: string()
+  .required("Password is required")
+  .min(8, "Password must be at least 8 characters")
+  .max(20, "Password must be at most 20 characters")
+  .matches(/\d+/, "Password must contain a number")
+  .matches(/[a-z]/, "Password must contain one lowercase letter")
+  .matches(/[A-Z]/, "Password must contain one uppercase letter")
+  .matches(/[!/[{}@$!%*?&.,_+-]/, "The password must contain at least one special character(!/[{}@$!%*?&.,_+-)"),
 });
 
 const RegisterForm = ({

@@ -11,6 +11,7 @@ const initialState = {
   city: "",
   bio: "",
   _id: "",
+  singleUser:[],
   loading: false,
   error: false,
 };
@@ -61,6 +62,13 @@ const authSlice = createSlice({
       state._id = payload._id;
       state.error = false;
     },
+
+    getSingleUserSuccess: (state, { payload }) => {
+      console.log(payload.data);
+      state.loading = false;
+      state.singleUser = payload.data;
+      state.error = false;
+    },
     logoutSuccess: (state) => {
       state.loading = false;
       state.token = "";
@@ -100,6 +108,7 @@ export const {
   loginSuccess,
   registerSuccess,
   getUserSuccess,
+  getSingleUserSuccess,
   logoutSuccess,
   getDeleteSuccess,
   fetchFail,

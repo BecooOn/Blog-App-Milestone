@@ -10,13 +10,14 @@ import Pagination from "@mui/material/Pagination";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Button, IconButton, Skeleton } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import useBlogCalls from "../../hooks/useBlogCalls";
 import { btnStyle } from "../../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
 import SkeletonCard from "../skeleton/SkeletonCard";
-import { NoDataMessage } from "../DataFetchMessages";
+// import { NoDataMessage } from "../DataFetchMessages";
 
 export default function Card({ page, setPage }) {
   const {
@@ -82,16 +83,6 @@ export default function Card({ page, setPage }) {
     <>
       {loading ? (
         <SkeletonCard />
-      ) : error ? (
-        <Box
-          sx={{
-            display: "flex",
-            // alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <NoDataMessage />
-        </Box>
       ) : (
         <Box
           sx={{

@@ -5,6 +5,7 @@ import {
   registerSuccess,
   logoutSuccess,
   getUserSuccess,
+  getSingleUserSuccess,
   getDeleteSuccess,
 } from "../features/authSlice";
 import { useDispatch } from "react-redux";
@@ -45,7 +46,7 @@ const useAuthCalls = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.post("/users/", userData);
-      dispatch(registerSuccess(data.data));
+      dispatch(registerSuccess(data));
       toastSuccessNotify("New user successfully registered!");
       //? sessionStorage de activePage varsa activePage e  eğer yoksa ana sayfaya (/) yönlendirmek için.
       let activePage = sessionStorage.getItem("activePage");
@@ -63,32 +64,6 @@ const useAuthCalls = () => {
     }
   };
 
-  // const register = async (userData) => {
-  //   dispatch(fetchStart());
-  //   let registerUserData = { email: userData.email, password: userData.password }
-  //   console.log(userData.email);
-  //   console.log(userData.password);
-  //   try {
-  //     const { data } = await axiosToken.post("/users/", userData);
-  //     dispatch(registerSuccess(data));
-  //     toastSuccessNotify("New user successfully registered!");
-  //     console.log(data);
-  //     await login(registerUserData);
-  //   } catch (error) {
-  //     if (error.response) {
-  //       // Sunucudan dönen bir yanıt varsa (HTTP durum kodu 4xx veya 5xx)
-  //       console.error("Error Response:", error.response);
-  //     } else if (error.request) {
-  //       // Sunucudan hiçbir yanıt alınmadıysa
-  //       console.error("No Response:", error.request);
-  //     } else {
-  //       // İstek ayarları sırasında bir hata meydana geldiyse
-  //       console.error("Error Message:", error.message);
-  //     }
-  //     dispatch(fetchFail());
-  //   }
-  // };
-
   //!-----------LOGOUT--------------
   const logout = async () => {
     dispatch(fetchStart());
@@ -104,7 +79,7 @@ const useAuthCalls = () => {
     }
   };
 
-  //!--------Kullanıcı çağırmak için--------------
+  //!--------Kullanıcıları çağırmak için--------------
   const getUser = async () => {
     dispatch(fetchStart());
     try {
@@ -116,13 +91,26 @@ const useAuthCalls = () => {
     }
   };
 
-  //!--------Kullanıcı güncellemek için--------------
-  const updateUser = async (userData, id) => {
+  //!--------single user için--------------
+   const getSingleUser = async (userId) => {
     dispatch(fetchStart());
     try {
-      await axiosToken.patch(`/users/${id}`, userData);
+      const { data } = await axiosToken.get(`/users/${userId}`);
+      // console.log(data);
+      dispatch(getSingleUserSuccess(data))
+      // getUser();
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
+
+  //!--------Kullanıcı güncellemek için--------------
+  const updateUser = async (userData, userId) => {
+    dispatch(fetchStart());
+    try {
+      await axiosToken.patch(`/users/${userId}`, userData);
       toastSuccessNotify(`Update is successful!`);
-      getUser();
+      getSingleUser(userId);
       // dispatch(getUserSuccess(data));
     } catch (error) {
       dispatch(fetchFail());
@@ -144,7 +132,7 @@ const useAuthCalls = () => {
     }
   };
 
-  return { login, register, logout, getUser, updateUser, deleteUser };
+  return { login, register, logout, getUser,getSingleUser, updateUser, deleteUser };
 };
 
 export default useAuthCalls;

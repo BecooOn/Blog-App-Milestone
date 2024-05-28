@@ -11,6 +11,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
+import useAuthCalls from "../hooks/useAuthCalls";
 
 const style = {
   position: "absolute",
@@ -47,6 +48,7 @@ export default function UpdateProfile() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const { singleUser } = useSelector((state) => state.auth);
   const {
     username,
     email,
@@ -57,9 +59,9 @@ export default function UpdateProfile() {
     bio,
     image,
     _id,
-  } = useSelector((state) => state.auth);
-  const { getBlogs, updateBlog } = useBlogCalls();
-  const { users } = useSelector((state) => state.blog);
+  } = singleUser;
+  const { getUser,updateUser } = useAuthCalls();
+  // const { users } = useSelector((state) => state.blog);
   // console.log(users);
   const [info, setInfo] = useState({
     image: image || "",
@@ -74,7 +76,7 @@ export default function UpdateProfile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getBlogs("users");
+      const userData = await getUser();
       if (userData) {
         setInfo({
           image: userData.image || "",
@@ -103,6 +105,7 @@ export default function UpdateProfile() {
       city: city || "",
       bio: bio || "",
     });
+    updateUser(_id, info);
   }, [image, username, email, password, firstName, lastName, city, bio]);
 
   const handleChange = (e) => {
@@ -111,7 +114,7 @@ export default function UpdateProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateBlog("users", _id, info);
+    updateUser(_id, info);
     setOpen(false);
   };
   const handleClickShowPassword = () => {

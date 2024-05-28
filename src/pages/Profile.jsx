@@ -13,15 +13,14 @@ import { btnStyle } from "../styles/globalStyles";
 import Swal from "sweetalert2";
 
 export default function Profile() {
-  const { username, email, firstName, lastName, image, _id } = useSelector(
-    (state) => state.auth
-  );
-  const { getBlogs } = useBlogCalls();
+  const { singleUser } = useSelector((state) => state.auth);
+  const { username, email, firstName, lastName, image, _id } = singleUser;
+  // const { getBlogs } = useBlogCalls();
   const { deleteUser } = useAuthCalls();
 
-  useEffect(() => {
-    getBlogs("users");
-  }, []);
+  // useEffect(() => {
+  //   getBlogs("users");
+  // }, []);
   const handleDeleteUser = () => {
     Swal.fire({
       title: "Are you sure?",
