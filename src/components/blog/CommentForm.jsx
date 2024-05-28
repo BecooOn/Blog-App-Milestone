@@ -29,7 +29,7 @@ const formatDate = (isoString) => {
 const CommentForm = ({ id }) => {
   //* id ilgili blog id'sini prop olarak aldım
   const blogID = id; //! karışıklık olmaması için id'yi yeni ve daha anlamlı değişkene aktardım
-  const { singleBlog, comments } = useSelector((state) => state.blog);
+  const {comments } = useSelector((state) => state.blog);
   const { _id } = useSelector((state) => state.auth); //? currentUser için
   const currentUserId = _id;
   const { getComments, updateComment, deleteComment } = useBlogCalls();

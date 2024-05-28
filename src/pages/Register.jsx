@@ -21,8 +21,6 @@ const Register = () => {
     await register(values);
     actions.resetForm();
     actions.setSubmitting(false);
-    //? register sonrası ana sayfaya yönlendirmek için
-    navigate("/");
   };
 
   return (

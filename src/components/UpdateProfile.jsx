@@ -60,7 +60,8 @@ export default function UpdateProfile() {
     image,
     _id,
   } = singleUser;
-  const { getUser,updateUser } = useAuthCalls();
+  const { getSingleUser } = useAuthCalls();
+  const { getUser, updateUser } = useAuthCalls();
   // const { users } = useSelector((state) => state.blog);
   // console.log(users);
   const [info, setInfo] = useState({
@@ -74,25 +75,25 @@ export default function UpdateProfile() {
     bio: bio || "",
   });
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUser();
-      if (userData) {
-        setInfo({
-          image: userData.image || "",
-          username: userData.username || "",
-          email: userData.email || "",
-          password: userData.password || "",
-          firstName: userData.firstName || "",
-          lastName: userData.lastName || "",
-          city: userData.city || "",
-          bio: userData.bio || "",
-        });
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const userData = await getUser();
+  //     if (userData) {
+  //       setInfo({
+  //         image: userData.image || "",
+  //         username: userData.username || "",
+  //         email: userData.email || "",
+  //         password: userData.password || "",
+  //         firstName: userData.firstName || "",
+  //         lastName: userData.lastName || "",
+  //         city: userData.city || "",
+  //         bio: userData.bio || "",
+  //       });
+  //     }
+  //   };
 
-    fetchUser();
-  }, []);
+  //   fetchUser();
+  // }, []);
 
   useEffect(() => {
     setInfo({
@@ -105,7 +106,7 @@ export default function UpdateProfile() {
       city: city || "",
       bio: bio || "",
     });
-    updateUser(_id, info);
+    // updateUser(_id, info);
   }, [image, username, email, password, firstName, lastName, city, bio]);
 
   const handleChange = (e) => {

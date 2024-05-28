@@ -30,10 +30,13 @@ const Detail = () => {
   );
   // console.log(singleBlog);
   // console.log(likes?.countOfLikes);
-  // console.log(comments);
-
+  
   const authorizedAuthor = singleBlog?.userId?._id === _id;
   // console.log(authorizedAuthor);
+  const filteredComments = comments.filter(
+    (comment) => comment.blogId === id
+  );
+  // console.log(filteredComments);
 
   const navigate = useNavigate();
 
@@ -195,7 +198,7 @@ const Detail = () => {
                     sx={{ cursor: "pointer" }}
                     onClick={handleComments}
                   />
-                  {singleBlog?.comments?.length}
+                  {filteredComments?.length}
                 </Box>
                 <IconButton
                   aria-label="add to favorites"

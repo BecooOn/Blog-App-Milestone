@@ -45,19 +45,16 @@ const useAuthCalls = () => {
   const register = async (userData) => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosToken.post("/users/", userData);
+      const { data } = await axiosPublic.post("/users/", userData);
       dispatch(registerSuccess(data));
       toastSuccessNotify("New user successfully registered!");
       //? sessionStorage de activePage varsa activePage e  eğer yoksa ana sayfaya (/) yönlendirmek için.
       let activePage = sessionStorage.getItem("activePage");
       if (!activePage || activePage === "null") {
-        activePage = "/";
-      } else {
-        navigate(activePage);
+        activePage = "/login";
       }
-
+      navigate(activePage);
       sessionStorage.removeItem("activePage");
-      // login(data)
     } catch (error) {
       toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());
@@ -92,12 +89,12 @@ const useAuthCalls = () => {
   };
 
   //!--------single user için--------------
-   const getSingleUser = async (userId) => {
+  const getSingleUser = async (userId) => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get(`/users/${userId}`);
       // console.log(data);
-      dispatch(getSingleUserSuccess(data))
+      dispatch(getSingleUserSuccess(data));
       // getUser();
     } catch (error) {
       dispatch(fetchFail());
@@ -132,7 +129,15 @@ const useAuthCalls = () => {
     }
   };
 
-  return { login, register, logout, getUser,getSingleUser, updateUser, deleteUser };
+  return {
+    login,
+    register,
+    logout,
+    getUser,
+    getSingleUser,
+    updateUser,
+    deleteUser,
+  };
 };
 
 export default useAuthCalls;

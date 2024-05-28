@@ -64,8 +64,8 @@ export default function Card({ page, setPage }) {
     if (username) {
       await postLike(blogId);
       await getLike(blogId);
-      // await getSingleBlog(blogId);
       await getPaginatedBlogs(page);
+      // await getSingleBlog(blogId);
     } else {
       navigate("/login");
     }
