@@ -29,19 +29,20 @@ const formatDate = (isoString) => {
 const CommentForm = ({ id }) => {
   //* id ilgili blog id'sini prop olarak aldım
   const blogID = id; //! karışıklık olmaması için id'yi yeni ve daha anlamlı değişkene aktardım
-  const { singleBlog } = useSelector((state) => state.blog);
+  const { singleBlog, comments } = useSelector((state) => state.blog);
   const { _id } = useSelector((state) => state.auth); //? currentUser için
   const currentUserId = _id;
-  const { getSingleBlog, updateComment, deleteComment } = useBlogCalls();
+  const { getComments, updateComment, deleteComment } = useBlogCalls();
   const [editComment, setEditComment] = useState({
     blogId: blogID,
     comment: "",
   });
   const [editCommentId, setEditCommentId] = useState(null);
 
-  // useEffect(() => {
-  //   getSingleBlog(blogID);
-  // }, []);
+  const filteredComments = comments.filter(
+    (comment) => comment.blogId === blogID
+  );
+  // console.log(filteredComments);
 
   const handleCommentEdit = (commentId, commentText) => {
     setEditCommentId(commentId);
@@ -80,7 +81,7 @@ const CommentForm = ({ id }) => {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteComment(commentId,blogID);
+        deleteComment(commentId, blogID);
       } else {
         Swal.fire("Canceled", "Comment deletion has been cancelled!");
       }
@@ -93,7 +94,7 @@ const CommentForm = ({ id }) => {
         <CommentEditor id={blogID} />
       </Box>
       <Box sx={{ textAlign: "justify", maxWidth: "600px" }}>
-        {singleBlog?.comments?.map((item) => (
+        {filteredComments?.map((item) => (
           <Box key={item?._id} sx={{ mt: 1, mb: 1 }}>
             <Box sx={{ display: "flex", gap: 2 }}>
               <Avatar>
@@ -112,7 +113,9 @@ const CommentForm = ({ id }) => {
                     <Box>
                       <IconButton
                         sx={{ color: "teal", cursor: "pointer", mx: 1 }}
-                        onClick={() => handleCommentEdit(item?._id, item?.comment)}
+                        onClick={() =>
+                          handleCommentEdit(item?._id, item?.comment)
+                        }
                       >
                         <BorderColorIcon />
                       </IconButton>
@@ -147,9 +150,7 @@ const CommentForm = ({ id }) => {
                 </Box>
               </Box>
             ) : (
-              <Typography>
-                {item?.comment}
-              </Typography>
+              <Typography>{item?.comment}</Typography>
             )}
 
             <Divider />

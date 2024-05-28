@@ -14,7 +14,7 @@ const TextEditor = ({ id }) => {
   const { getComments, createComment } = useBlogCalls();
 
   const handleTextAreaChange = (value) => {
-    // ReactQuill onChange eventi yeni değeri doğrudan verir
+    //? ReactQuill onChange eventi yeni değeri doğrudan verir.
     setPostComment((prev) => ({ ...prev, comment: value }));
   };
 
@@ -22,7 +22,7 @@ const TextEditor = ({ id }) => {
     //* HTML etiketlerini regex ile temizleyebiliriz ya da tercih olarak dompurify eklenmeli
     const cleanComment = postComment.comment.replace(/<[^>]*>?/gm, "");
     await createComment({ ...postComment, comment: cleanComment });
-    await getComments();
+    // await getComments();
     setPostComment({
       blogId: id,
       comment: "",

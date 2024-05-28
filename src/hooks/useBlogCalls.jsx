@@ -112,7 +112,7 @@ const useBlogCalls = () => {
   const getComments = async () => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosToken(`/comments/?limit=1000`);
+      const { data } = await axiosToken(`/comments/?limit=100000`);
       dispatch(getCommentsSuccess(data));
     } catch (error) {
       dispatch(fetchFail());
@@ -140,9 +140,9 @@ const useBlogCalls = () => {
     try {
       await axiosToken.post("/comments/", information);
       toastSuccessNotify(`Comment was added successfully!`);
-      // await getComments();
+      await getComments();
       // await getBlogs("comments");
-      getSingleBlog(information.blogId);
+      // getSingleBlog(information.blogId);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(
@@ -187,7 +187,8 @@ const useBlogCalls = () => {
     try {
       await axiosToken.patch(`/${endpoint}/${_id}`, information);
       toastSuccessNotify(`${endpoint} was updated successfully!`);
-      getBlogs(endpoint);
+      // getBlogs(endpoint);
+      getSingleBlog(_id);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(

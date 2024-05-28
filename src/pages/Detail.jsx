@@ -179,7 +179,7 @@ const Detail = () => {
             >
               <Box>
                 <VisibilityIcon />
-                {singleBlog.countOfVisitors}
+                {singleBlog?.countOfVisitors}
               </Box>
               <Box>
                 <CommentIcon

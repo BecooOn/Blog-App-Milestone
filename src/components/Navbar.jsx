@@ -90,7 +90,7 @@ function Navbar() {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{padding:"4px 0"}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <img

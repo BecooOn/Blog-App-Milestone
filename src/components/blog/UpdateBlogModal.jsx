@@ -29,15 +29,13 @@ const UpdateBlogModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
   const { categories } = useSelector((state) => state.blog);
 
   useEffect(() => {
-    // if (singleBlog) {
     setInfo({
-      category: singleBlog.categoryId?._id || "",
-      title: singleBlog.title || "",
-      content: singleBlog.content || "",
-      image: singleBlog.image || "",
-      isPublish: singleBlog.isPublish,
+      category: singleBlog?.categoryId?._id || "",
+      title: singleBlog?.title || "",
+      content: singleBlog?.content || "",
+      image: singleBlog?.image || "",
+      isPublish: singleBlog?.isPublish,
     });
-    // }
   }, [open]);
 
   const handleChange = (e) => {
