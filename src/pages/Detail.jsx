@@ -28,7 +28,7 @@ const Detail = () => {
   // console.log(singleBlog);
   // console.log(likes?.countOfLikes);
 
-  const authorizedAuthor = singleBlog?.userId?._id === _id;
+  const authorizedAuthor = singleBlog?.userId?._id ===_id;
   // console.log(authorizedAuthor);
   const filteredComments = comments.filter((comment) => comment.blogId === id);
   // console.log(filteredComments);
