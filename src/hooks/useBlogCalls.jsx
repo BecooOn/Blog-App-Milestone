@@ -125,7 +125,7 @@ const useBlogCalls = () => {
     dispatch(fetchStart());
     try {
       await axiosToken.delete(`/comments/${commentId}`);
-      getSingleBlog(blogID);
+      await getComments();
       toastSuccessNotify("Comment was deleted successfully!");
     } catch (error) {
       dispatch(fetchFail());
@@ -155,7 +155,7 @@ const useBlogCalls = () => {
     try {
       await axiosToken.patch(`/comments/${commentID}`, information);
       toastSuccessNotify("Comment was updated successfully!");
-      getSingleBlog(information?.blogID);
+      await getComments();
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(
