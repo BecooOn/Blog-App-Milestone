@@ -9,11 +9,7 @@
     "@fontsource/anta": "^5.0.2",
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.18",
-    "@mui/x-charts": "^7.5.0",
-    "@mui/x-data-grid": "^7.3.2",
-    "@mui/x-data-grid-generator": "^7.3.2",
     "@reduxjs/toolkit": "^2.2.3",
-    "@tremor/react": "^3.16.3",
     "axios": "^1.6.8",
     "formik": "^2.4.6",
     "react": "^18.3.1",
@@ -53,7 +49,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "tailwindcss": "^3.4.3"
-  }
+  "devDependencies": {}
 }
