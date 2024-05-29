@@ -85,8 +85,8 @@ const useBlogCalls = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get(`/blogs/${id}/getLike`);
+      dispatch(likeSuccess(data));
       // console.log(data);
-      // getSingleBlog(id);
     } catch (error) {
       dispatch(fetchFail());
       // console.log(error);

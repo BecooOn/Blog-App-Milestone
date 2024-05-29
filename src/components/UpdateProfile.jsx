@@ -41,82 +41,20 @@ const style = {
   },
 };
 
-export default function UpdateProfile() {
-  const [open, setOpen] = useState(false);
+export default function UpdateProfile({
+  info,
+  setInfo,
+  handleSubmit,
+  open,
+  setOpen,
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const { singleUser } = useSelector((state) => state.auth);
-  const {
-    username,
-    email,
-    password,
-    firstName,
-    lastName,
-    city,
-    bio,
-    image,
-    _id,
-  } = singleUser;
-  const { getSingleUser } = useAuthCalls();
-  const { getUser, updateUser } = useAuthCalls();
-  // const { users } = useSelector((state) => state.blog);
-  // console.log(users);
-  const [info, setInfo] = useState({
-    image: image || "",
-    username: username || "",
-    email: email || "",
-    password: password || "",
-    firstName: firstName || "",
-    lastName: lastName || "",
-    city: city || "",
-    bio: bio || "",
-  });
-
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const userData = await getUser();
-  //     if (userData) {
-  //       setInfo({
-  //         image: userData.image || "",
-  //         username: userData.username || "",
-  //         email: userData.email || "",
-  //         password: userData.password || "",
-  //         firstName: userData.firstName || "",
-  //         lastName: userData.lastName || "",
-  //         city: userData.city || "",
-  //         bio: userData.bio || "",
-  //       });
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
-
-  useEffect(() => {
-    setInfo({
-      image: image || "",
-      username: username || "",
-      email: email || "",
-      password: password || "",
-      firstName: firstName || "",
-      lastName: lastName || "",
-      city: city || "",
-      bio: bio || "",
-    });
-    // updateUser(_id, info);
-  }, [image, username, email, password, firstName, lastName, city, bio]);
-
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    updateUser(_id, info);
-    setOpen(false);
   };
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

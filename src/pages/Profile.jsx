@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
-import useBlogCalls from "../hooks/useBlogCalls";
 import useAuthCalls from "../hooks/useAuthCalls";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -9,18 +8,71 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import UpdateProfile from "../components/UpdateProfile";
-import { btnStyle } from "../styles/globalStyles";
 import Swal from "sweetalert2";
 
 export default function Profile() {
+  const [open, setOpen] = useState(false);
   const { singleUser } = useSelector((state) => state.auth);
-  const { username, email, firstName, lastName, image, _id } = singleUser;
-  // const { getSingleUser } = useAuthCalls();
-  const { getSingleUser,deleteUser } = useAuthCalls();
-  console.log(singleUser);
+  const {
+    username,
+    email,
+    password,
+    firstName,
+    lastName,
+    city,
+    bio,
+    image,
+    _id,
+  } = singleUser;
+  const { getSingleUser, updateUser, deleteUser } = useAuthCalls();
+  // console.log(singleUser);
+  const [info, setInfo] = useState({
+    image: image || "",
+    username: username || "",
+    email: email || "",
+    password: password || "",
+    firstName: firstName || "",
+    lastName: lastName || "",
+    city: city || "",
+    bio: bio || "",
+  });
+  // console.log(info);
   useEffect(() => {
-    getSingleUser(_id);
+    const fetchUser = async () => {
+      const userData = await getSingleUser(_id);
+      if (userData) {
+        setInfo({
+          image: userData.image || "",
+          username: userData.username || "",
+          email: userData.email || "",
+          password: userData.password || "",
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          city: userData.city || "",
+          bio: userData.bio || "",
+        });
+      }
+    };
+
+    fetchUser();
   }, []);
+  useEffect(() => {
+    setInfo({
+      image: image || "",
+      username: username || "",
+      email: email || "",
+      password: password || "",
+      firstName: firstName || "",
+      lastName: lastName || "",
+      city: city || "",
+      bio: bio || "",
+    });
+  }, [image, username, email, password, firstName, lastName, city, bio]);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await updateUser(_id, info);
+    setOpen(false);
+  };
   const handleDeleteUser = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -87,7 +139,13 @@ export default function Profile() {
           </Typography>
         </CardContent>
         <CardActions>
-          <UpdateProfile />
+          <UpdateProfile
+            info={info}
+            setInfo={setInfo}
+            handleSubmit={handleSubmit}
+            open={open}
+            setOpen={setOpen}
+          />
           <Button
             sx={{
               backgroundColor: "red",

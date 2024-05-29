@@ -95,20 +95,18 @@ const useAuthCalls = () => {
       const { data } = await axiosToken.get(`/users/${userId}`);
       // console.log(data);
       dispatch(getSingleUserSuccess(data));
-      // getUser();
     } catch (error) {
       dispatch(fetchFail());
     }
   };
 
   //!--------Kullanıcı güncellemek için--------------
-  const updateUser = async (userData, userId) => {
+  const updateUser = async ( userId,userData) => {
     dispatch(fetchStart());
     try {
       await axiosToken.patch(`/users/${userId}`, userData);
       toastSuccessNotify(`Update is successful!`);
-      getSingleUser(userId);
-      // dispatch(getUserSuccess(data));
+      await getSingleUser(userId);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`Oops! there is something wrong while updating`);

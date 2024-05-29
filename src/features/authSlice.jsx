@@ -64,7 +64,7 @@ const authSlice = createSlice({
     },
 
     getSingleUserSuccess: (state, { payload }) => {
-      console.log(payload.data);
+      // console.log(payload.data);
       state.loading = false;
       state.singleUser = payload.data;
       state.error = false;
