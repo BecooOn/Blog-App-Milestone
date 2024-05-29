@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -8,7 +9,6 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
 
 export const loginSchema = object({
   email: string().email("Enter a valid email").required("Email is required"),
@@ -20,8 +20,8 @@ export const loginSchema = object({
     .matches(/[a-z]/, "Password must contain at least one lowercase letter")
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
     .matches(
-      /[!/[{"=|}@$!%*?&.,_+-^#<>]+/,
-      "The password must contain at least one special character(!/[{=|}@$!%*?&.,_+-^#)."
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "The password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)."
     ),
 });
 
@@ -40,8 +40,6 @@ const LoginForm = ({
 
   return (
     <Form>
-      {/* //?Form formikten import edildi */}
-      {/* //!Box,Textfield bunlar mui component'leridir */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField
           label="Email *"
