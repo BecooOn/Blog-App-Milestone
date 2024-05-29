@@ -48,10 +48,6 @@ const getBlogSlice = createSlice({
       state,
       { payload: { blogs, categories, comments, users } }
     ) => {
-      // console.log(payload.blogs);
-      // console.log(payload.categories);
-      // console.log(payload.comments);
-      // console.log(payload.users);
       state.loading = false;
       state.blogs = blogs;
       state.categories = categories;

@@ -17,7 +17,6 @@ import useBlogCalls from "../../hooks/useBlogCalls";
 import { btnStyle } from "../../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
 import SkeletonCard from "../skeleton/SkeletonCard";
-// import { NoDataMessage } from "../DataFetchMessages";
 
 export default function Card({ page, setPage }) {
   const {
@@ -65,7 +64,6 @@ export default function Card({ page, setPage }) {
       await postLike(blogId);
       await getLike(blogId);
       await getPaginatedBlogs(page);
-      // await getSingleBlog(blogId);
     } else {
       navigate("/login");
     }

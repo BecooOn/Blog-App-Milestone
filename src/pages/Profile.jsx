@@ -86,7 +86,7 @@ export default function Profile() {
       cancelButtonText: "Cancel",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteUser(_id);
+        deleteUser(_id); //? _id silinecek kullanıcının idsi
       } else {
         Swal.fire("Canceled", "User deletion has been cancelled!");
       }
@@ -122,12 +122,10 @@ export default function Profile() {
         <Box
           component="div"
           sx={{
-            // border: "1px solid black",
             display: "inline-block",
-            width: "180px",
-            height: "180px",
+            width: "200px",
+            height: "200px",
             borderRadius: "50%",
-            // border:"2px solid red"
           }}
         >
           <img

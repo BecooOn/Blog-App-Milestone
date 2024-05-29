@@ -83,7 +83,6 @@ const Detail = () => {
   const handleLikes = async (singleBlogId) => {
     await postLike(singleBlogId);
     await getLike(singleBlogId);
-    // await getSingleBlog(id);
   };
 
   return (

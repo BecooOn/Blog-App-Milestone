@@ -21,7 +21,7 @@ export default function About() {
         <title>Blogla-Bakalim-About</title>
         <meta
           name="description"
-          content="Blogla-Bakalim hakkında daha fazla bilgi edinin."
+          content="Blogla-Bakalim hakkinda daha fazla bilgi edinin."
         />
       </Helmet>
       <Box sx={{ display: "flex", justifyContent: "center", my: 8 }}>

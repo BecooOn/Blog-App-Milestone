@@ -3,15 +3,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { TextField } from "@mui/material";
-import useBlogCalls from "../hooks/useBlogCalls";
-import { useSelector } from "react-redux";
 import { btnStyle } from "../styles/globalStyles";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
-import useAuthCalls from "../hooks/useAuthCalls";
 
 const style = {
   position: "absolute",

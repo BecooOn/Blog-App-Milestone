@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
 import About from "../pages/About";
 import Dashboard from "../pages/Dashboard";
 import Detail from "../pages/Detail";
@@ -12,7 +11,6 @@ import Register from "../pages/Register";
 import PrivateRouter from "./PrivateRouter";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
 
 const AppRouter = () => {
   return (

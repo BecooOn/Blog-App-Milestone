@@ -31,7 +31,7 @@ function App() {
     <>
      <Helmet>
         <title>Blogla-Bakalim</title>
-        <meta name="description" content="En iyi blog platformu ile yazılarınızı paylaşın." />
+        <meta name="description" content="En iyi blog platformu ile yazilarinizi paylasin." />
       </Helmet>
       <ThemeProvider theme={theme}>
         <Provider store={store}>

@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 import useBlogCalls from "../../hooks/useBlogCalls";
 import CloseIcon from "@mui/icons-material/Close";
 import { modalStyle } from "../../styles/globalStyles";
-import { useNavigate } from "react-router-dom";
 
 const UpdateBlogModal = ({ handleUpdateBlogClose, open, singleBlog }) => {
   const [info, setInfo] = useState({

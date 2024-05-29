@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { btnStyle } from "../../styles/globalStyles";
 import useBlogCalls from "../../hooks/useBlogCalls";
 
@@ -11,7 +11,7 @@ const TextEditor = ({ id }) => {
     comment: "",
   });
 
-  const { getComments, createComment } = useBlogCalls();
+  const { createComment } = useBlogCalls();
 
   const handleTextAreaChange = (value) => {
     //? ReactQuill onChange eventi yeni değeri doğrudan verir.
@@ -22,7 +22,6 @@ const TextEditor = ({ id }) => {
     //* HTML etiketlerini regex ile temizleyebiliriz ya da tercih olarak dompurify eklenmeli
     const cleanComment = postComment.comment.replace(/<[^>]*>?/gm, "");
     await createComment({ ...postComment, comment: cleanComment });
-    // await getComments();
     setPostComment({
       blogId: id,
       comment: "",

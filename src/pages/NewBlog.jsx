@@ -23,7 +23,6 @@ const NewBlog = () => {
   });
   const { categories } = useSelector((state) => state.blog);
   const { getBlogs, createBlog } = useBlogCalls();
-
   // console.log(categories);
 
   useEffect(() => {

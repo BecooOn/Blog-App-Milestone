@@ -46,7 +46,6 @@ export default function MyBlog() {
     await postLike(itemId);
     await getLike(itemId);
     await getMyBlogs(_id);
-    // console.log("worked");
   };
 
   return (

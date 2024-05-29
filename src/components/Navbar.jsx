@@ -74,8 +74,6 @@ function Navbar() {
       }
     }
   };
-  
-
   const handleProfile = (setting) => {
     if (setting.toLowerCase() === "profile") {
       navigate("/profile");

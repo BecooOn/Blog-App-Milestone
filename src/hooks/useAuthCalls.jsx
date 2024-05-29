@@ -26,7 +26,6 @@ const useAuthCalls = () => {
       const { data } = await axiosPublic.post("/auth/login", userData);
       dispatch(loginSuccess(data));
       toastSuccessNotify("Login is successful");
-
       //? sessionStorage de activePage varsa activePage e  eğer yoksa ana sayfaya (/) yönlendirmek için.
       let activePage = sessionStorage.getItem("activePage");
       if (!activePage || activePage === "null") {

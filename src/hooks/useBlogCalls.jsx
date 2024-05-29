@@ -141,8 +141,6 @@ const useBlogCalls = () => {
       await axiosToken.post("/comments/", information);
       toastSuccessNotify(`Comment was added successfully!`);
       await getComments();
-      // await getBlogs("comments");
-      // getSingleBlog(information.blogId);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(
@@ -187,7 +185,6 @@ const useBlogCalls = () => {
     try {
       await axiosToken.patch(`/${endpoint}/${_id}`, information);
       toastSuccessNotify(`${endpoint} was updated successfully!`);
-      // getBlogs(endpoint);
       getSingleBlog(_id);
     } catch (error) {
       dispatch(fetchFail());

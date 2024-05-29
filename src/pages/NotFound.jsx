@@ -3,7 +3,6 @@ import errorImg from "../assets/404.png";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-// import { notFoundBtnStyle } from "../styles/globalStyles";
 import HomeIcon from "@mui/icons-material/Home";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Helmet } from "react-helmet-async";

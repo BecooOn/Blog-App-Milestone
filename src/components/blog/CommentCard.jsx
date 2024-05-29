@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import useBlogCalls from "../hooks/useBlogCalls";
-import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import { Typography, IconButton, Button, Avatar } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import CommentForm from "../components/blog/CommentForm";
 
 const CommentCard = () => {
   const { getMyBlogs, postLike, getLike } = useBlogCalls();
   const { id } = useParams(); //? ilgili id ye sahip blog için
-  const { myBlogs, comments} = useSelector((state) => state.blog);
-
-  const navigate = useNavigate();
+  const { myBlogs} = useSelector((state) => state.blog);
 
   useEffect(() => {
     getMyBlogs(id);
@@ -23,7 +19,6 @@ const CommentCard = () => {
   const handleLikes = async (itemId) => {
     await postLike(itemId);
     await getLike(itemId);
-    // await getmyBlogs(id);
   };
 
   return (
