@@ -9,6 +9,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
+import {toastWarnNotify} from "../helper/ToastNotify"
 
 const style = {
   position: "absolute",
@@ -43,12 +44,17 @@ export default function UpdateProfile({
   setInfo,
   handleSubmit,
   open,
-  setOpen,
+  handleOpen,
+  handleClose
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      toastWarnNotify("Please note that password is required for making changes.");
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });

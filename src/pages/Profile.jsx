@@ -9,7 +9,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import UpdateProfile from "../components/UpdateProfile";
 import Swal from "sweetalert2";
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
+import { btnStyle } from "../styles/globalStyles";
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
@@ -69,6 +70,9 @@ export default function Profile() {
       bio: bio || "",
     });
   }, [image, username, email, password, firstName, lastName, city, bio]);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     await updateUser(_id, info);
@@ -94,78 +98,86 @@ export default function Profile() {
   };
   return (
     <>
-     <Helmet>
+      <Helmet>
         <title>Blogla-Bakalim-Your-Profile</title>
         <meta
           name="description"
           content="Blogla-Bakalim senin en iyi profil sayfandir."
         />
       </Helmet>
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        p: 2,
-        height: "500px",
-      }}
-    >
-      <Card
+      <Box
         sx={{
-          maxWidth: 400,
-          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexWrap: "wrap",
           p: 2,
-          boxShadow: "0 0 20px black",
+          height: "500px",
         }}
       >
-        <Box
-          component="div"
+        <Card
           sx={{
-            display: "inline-block",
-            width: "200px",
-            height: "200px",
-            borderRadius: "50%",
+            maxWidth: 400,
+            textAlign: "center",
+            p: 2,
+            boxShadow: "0 0 20px black",
           }}
         >
-          <img
-            src={image}
-            alt={username}
-            style={{ width: "180px", height: "180px", borderRadius: "50%" }}
-          />
-        </Box>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {username}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {`${firstName} ${lastName}`}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {email}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <UpdateProfile
-            info={info}
-            setInfo={setInfo}
-            handleSubmit={handleSubmit}
-            open={open}
-            setOpen={setOpen}
-          />
-          <Button
+          <Box
+            component="div"
             sx={{
-              backgroundColor: "red",
-              color: "white",
-              "&:hover": { backgroundColor: "orange" },
+              display: "inline-block",
+              width: "200px",
+              height: "200px",
+              borderRadius: "50%",
             }}
-            size="small"
-            onClick={handleDeleteUser}
           >
-            Delete your account
-          </Button>
-        </CardActions>
-      </Card>
-    </Box></>
+            <img
+              src={image}
+              alt={username}
+              style={{ width: "180px", height: "180px", borderRadius: "50%" }}
+            />
+          </Box>
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+              {username}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {`${firstName} ${lastName}`}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {email}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button sx={btnStyle} size="small" onClick={handleOpen}>
+              Update your Profile
+            </Button>
+            {open && (
+              <UpdateProfile
+                info={info}
+                setInfo={setInfo}
+                handleSubmit={handleSubmit}
+                open={open}
+                setOpen={setOpen}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+              />
+            )}
+            <Button
+              sx={{
+                backgroundColor: "red",
+                color: "white",
+                "&:hover": { backgroundColor: "orange" },
+              }}
+              size="small"
+              onClick={handleDeleteUser}
+            >
+              Delete your account
+            </Button>
+          </CardActions>
+        </Card>
+      </Box>
+    </>
   );
 }
