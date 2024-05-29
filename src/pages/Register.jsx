@@ -12,6 +12,7 @@ import logo from "../assets/logo.png";
 import { Button } from "@mui/material";
 import { accountQuestionStyle } from "../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const Register = () => {
   const { register } = useAuthCalls();
@@ -24,6 +25,14 @@ const Register = () => {
   };
 
   return (
+    <>
+    <Helmet>
+        <title>Blogla-Bakalim-Register</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim'a kaydolun."
+        />
+      </Helmet>
     <Container maxWidth="lg">
       <Grid
         container
@@ -118,7 +127,7 @@ const Register = () => {
           </Box>
         </Grid>
       </Grid>
-    </Container>
+    </Container></>
   );
 };
 

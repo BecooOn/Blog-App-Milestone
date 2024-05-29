@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SkeletonCard from "../components/skeleton/SkeletonCard";
 import { NoBlogMessage, NoDataMessage } from "../components/DataFetchMessages";
 import { btnStyle } from "../styles/globalStyles";
+import { Helmet } from 'react-helmet-async';
 
 export default function MyBlog() {
   const { _id, loading, error } = useSelector((state) => state.auth || {});
@@ -50,6 +51,13 @@ export default function MyBlog() {
 
   return (
     <>
+    <Helmet>
+        <title>Blogla-Bakalim-My-Blog</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim benim bloglarim."
+        />
+      </Helmet>
       {loading ? (
         <SkeletonCard />
       ) : error ? (

@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import useBlogCalls from "../hooks/useBlogCalls";
 import { useSelector } from "react-redux";
 import { toastWarnNotify } from "../helper/ToastNotify";
+import { Helmet } from 'react-helmet-async';
 
 const NewBlog = () => {
   const [info, setInfo] = useState({
@@ -60,6 +61,14 @@ const NewBlog = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>Blogla-Bakalim-New-Blog</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim'da blog oluştur."
+        />
+      </Helmet>
     <Box>
       <form onSubmit={handleSubmit}>
         <Box
@@ -147,7 +156,7 @@ const NewBlog = () => {
           </Button>
         </Box>
       </form>
-    </Box>
+    </Box></>
   );
 };
 

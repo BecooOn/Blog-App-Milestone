@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import UpdateProfile from "../components/UpdateProfile";
 import Swal from "sweetalert2";
+import { Helmet } from 'react-helmet-async';
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
@@ -92,6 +93,14 @@ export default function Profile() {
     });
   };
   return (
+    <>
+     <Helmet>
+        <title>Blogla-Bakalim-Your-Profile</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim senin en iyi profil sayfandir."
+        />
+      </Helmet>
     <Box
       sx={{
         display: "flex",
@@ -159,6 +168,6 @@ export default function Profile() {
           </Button>
         </CardActions>
       </Card>
-    </Box>
+    </Box></>
   );
 }

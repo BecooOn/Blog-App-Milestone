@@ -1,11 +1,12 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppRouter from "./router/AppRouter";
-import { amber, blue, lightGreen, teal } from "@mui/material/colors";
+import { amber, teal } from "@mui/material/colors";
 import { Provider } from "react-redux";
 import store, { persistor } from "./app/store";
 import { ToastContainer } from "react-toastify";
 import { Anta } from "@fontsource/anta";
 import { PersistGate } from "redux-persist/integration/react";
+import { Helmet } from 'react-helmet-async';
 
 function App() {
   const theme = createTheme({
@@ -28,6 +29,10 @@ function App() {
   });
   return (
     <>
+     <Helmet>
+        <title>Blogla-Bakalim</title>
+        <meta name="description" content="En iyi blog platformu ile yazılarınızı paylaşın." />
+      </Helmet>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>

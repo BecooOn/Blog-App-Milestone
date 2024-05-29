@@ -13,8 +13,7 @@ import { btnStyle, expandIcons } from "../styles/globalStyles";
 import CommentForm from "../components/blog/CommentForm";
 import Swal from "sweetalert2";
 import UpdateBlogModal from "../components/blog/UpdateBlogModal";
-import { ErrorMessage, NoDataMessage } from "../components/DataFetchMessages";
-import loadingGIF from "../assets/loading.gif";
+import { Helmet } from 'react-helmet-async';
 
 const Detail = () => {
   const [expanded, setExpanded] = useState(false);
@@ -89,6 +88,13 @@ const Detail = () => {
 
   return (
     <>
+    <Helmet>
+        <title>Blogla-Bakalim-Detail-Blog</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim'da detayli blog oku."
+        />
+      </Helmet>
       <Box
         sx={{
           display: "flex",

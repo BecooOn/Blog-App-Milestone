@@ -12,6 +12,7 @@ import logo from "../assets/logo.png";
 import LoginForm, { loginSchema } from "../components/auth/LoginForm";
 import { Button } from "@mui/material";
 import { accountQuestionStyle } from "../styles/globalStyles";
+import { Helmet } from 'react-helmet-async';
 
 const Login = () => {
   const { login } = useAuthCalls();
@@ -36,6 +37,14 @@ const Login = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>Blogla-Bakalim-Login</title>
+        <meta
+          name="description"
+          content="Blogla-Bakalim'a giris yapin."
+        />
+      </Helmet>
     <Container maxWidth="lg">
       <Grid
         container
@@ -119,7 +128,7 @@ const Login = () => {
           </Box>
         </Grid>
       </Grid>
-    </Container>
+    </Container></>
   );
 };
 
