@@ -101,7 +101,7 @@ export default function Card({ page, setPage }) {
               sx={{
                 border: "1px solid gray",
                 p: 3,
-                height: "1250px",
+                height: "1150px",
                 overflowY: "scroll",
                 "&::-webkit-scrollbar": { width: "0px" },
                 textAlign: { xs: "center", sm: "left" },
