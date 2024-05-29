@@ -99,7 +99,7 @@ export default function Profile() {
   return (
     <>
       <Helmet>
-        <title>Blogla-Bakalim-Your-Profile</title>
+        <title>Blogla-Bakalim-Profile</title>
         <meta
           name="description"
           content="Blogla-Bakalim senin en iyi profil sayfandir."
