@@ -21,7 +21,7 @@ const useAuthCalls = () => {
   //!-----------LOGIN--------------
   const login = async (userData) => {
     dispatch(fetchStart());
-    console.log(userData);
+    // console.log(userData);
     try {
       const { data } = await axiosPublic.post("/auth/login", userData);
       dispatch(loginSuccess(data));

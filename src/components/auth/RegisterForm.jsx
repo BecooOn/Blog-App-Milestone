@@ -12,7 +12,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 export const registerSchema = object({
   username: string()
-    .max(20, "Username must be less than 10 characters.")
+    .max(20, "Username must be less than 20 characters.")
     .required("Username is required."),
   firstName: string()
     .max(20, "The first name must be less than 20 characters.")

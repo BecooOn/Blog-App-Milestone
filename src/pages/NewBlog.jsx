@@ -12,6 +12,7 @@ import useBlogCalls from "../hooks/useBlogCalls";
 import { useSelector } from "react-redux";
 import { toastWarnNotify } from "../helper/ToastNotify";
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from "react-router-dom";
 
 const NewBlog = () => {
   const [info, setInfo] = useState({
@@ -24,7 +25,7 @@ const NewBlog = () => {
   const { categories } = useSelector((state) => state.blog);
   const { getBlogs, createBlog } = useBlogCalls();
   // console.log(categories);
-
+const navigate = useNavigate()
   useEffect(() => {
     getBlogs("categories");
   }, []);
@@ -50,6 +51,7 @@ const NewBlog = () => {
       content: content,
     };
     createBlog("blogs", information);
+    navigate("/my-blog")
     setInfo({
       title: "",
       image: "",
