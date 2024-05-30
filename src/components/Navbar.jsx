@@ -19,6 +19,7 @@ import logo from "../assets/logo.png";
 const pages = ["Home", "About", "New blog"];
 const settings = ["Profile", "My Blogs", "Logout"];
 const loginSet = ["Login"];
+const registerSet = ["Register"];
 
 function Navbar() {
   const { username, image } = useSelector((state) => state.auth);
@@ -27,10 +28,10 @@ function Navbar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); //? Hangi sayfada olduğumuzu belirlemek için; çünkü activePage de style değişikliklerini olduğumuz sayfayı bilerek ayarlamak için gerekli
+  const location = useLocation(); //? Hangi sayfada olduğumuzu belirlemek için; çünkü activePage de style değişikliklerini olduğumuz sayfayı bilerek ayarlamak için gerekli 
 
   useEffect(() => {
-    //?useEffect ile route değişikliklerini izleyerek activePage'i güncellemek için
+     //?useEffect ile route değişikliklerini izleyerek activePage'i güncellemek için
     const path = location.pathname;
     if (path === "/") {
       setActivePage("Home");
@@ -74,6 +75,7 @@ function Navbar() {
       }
     }
   };
+
   const handleProfile = (setting) => {
     if (setting.toLowerCase() === "profile") {
       navigate("/profile");
@@ -85,12 +87,14 @@ function Navbar() {
       sessionStorage.removeItem("activePage");
     } else if (setting.toLowerCase() === "login") {
       navigate("/login");
+    } else if (setting.toLowerCase() === "register") {
+      navigate("/register");
     }
   };
 
   return (
     <>
-      <AppBar position="fixed" sx={{padding:"4px 0"}}>
+      <AppBar position="fixed" sx={{ padding: "4px 0" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <img
@@ -217,23 +221,36 @@ function Navbar() {
                     </MenuItem>
                   ))}
                 {!username &&
-                  loginSet.map((setting) => (
-                    <MenuItem
-                      key={setting}
-                      onClick={() => {
-                        handleProfile(setting);
-                        handleCloseUserMenu();
-                      }}
-                    >
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
+                  (location.pathname === "/login" ? (
+                    registerSet.map((setting) => (
+                      <MenuItem
+                        key={setting}
+                        onClick={() => {
+                          handleProfile(setting);
+                          handleCloseUserMenu();
+                        }}
+                      >
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    loginSet.map((setting) => (
+                      <MenuItem
+                        key={setting}
+                        onClick={() => {
+                          handleProfile(setting);
+                          handleCloseUserMenu();
+                        }}
+                      >
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))
                   ))}
               </Menu>
             </Box>
           </Toolbar>
         </Container>
       </AppBar>
-      {/* //!navbar fixed olmasından kaynaklı boşluk açmak için */}
       <Box sx={{ height: "100px" }}></Box>
     </>
   );
