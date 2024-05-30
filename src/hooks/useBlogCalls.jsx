@@ -169,12 +169,12 @@ const useBlogCalls = () => {
     dispatch(fetchStart());
     try {
       await axiosToken.delete(`/${endpoint}/${id}`);
-      toastSuccessNotify(`${endpoint} was deleted successfully!`);
+      toastSuccessNotify(`Blog was deleted successfully!`);
       getBlogs(endpoint);
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(
-        `Oops! there is something wrong while deleting for ${endpoint}`
+        `Oops! there is something wrong while deleting!`
       );
     }
   };
