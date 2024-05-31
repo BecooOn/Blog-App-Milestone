@@ -16,12 +16,12 @@ export const loginSchema = object({
     .required("Password is required")
     .min(8, "Password must be at least 8 characters")
     .max(16, "Password must be at most 16 characters")
-    .matches(/\d/, "Password must contain at least one number")
-    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/\d+/, "Password must contain at least one number")
+    .matches(/[a-zçöşüğı]+/, "Password must contain at least one lowercase letter")
+    .matches(/[A-ZÇÖŞÜĞİ]+/, "Password must contain at least one uppercase letter")
     .matches(
-      /[!@#$%^&*(),.?":{}|<>]/,
-      "The password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)."
+      /[!/[@$!%*?&]+/,
+      "The password must contain at least one special character (!/[@$!%*?&)."
     ),
 });
 

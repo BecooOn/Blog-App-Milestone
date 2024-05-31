@@ -95,7 +95,7 @@ function Navbar() {
   return (
     <>
       <AppBar position="fixed" sx={{ padding: "4px 0" }}>
-        <Container maxWidth="xl">
+        <Container maxWidth="1920px">
           <Toolbar disableGutters>
             <img
               src={logo}

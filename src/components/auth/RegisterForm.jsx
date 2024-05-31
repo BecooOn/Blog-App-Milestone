@@ -18,7 +18,7 @@ export const registerSchema = object({
     .max(20, "The first name must be less than 20 characters.")
     .required("The first name is required"),
   lastName: string()
-    .max(20, "The surname must be less than 320 characters.")
+    .max(20, "The surname must be less than 20 characters.")
     .required("The surname is required"),
   email: string()
     .email("Please enter a valid email.")
@@ -28,9 +28,12 @@ export const registerSchema = object({
     .min(8, "Password must be at least 8 characters")
     .max(20, "Password must be at most 20 characters")
     .matches(/\d+/, "Password must contain a number")
-    .matches(/[a-z]/, "Password must contain one lowercase letter")
-    .matches(/[A-Z]/, "Password must contain one uppercase letter")
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, "The password must contain at least one special character (!@#$%^&*(),.?\":{}|<>)."),
+    .matches(/[a-zçöşüğı]+/, "Password must contain one lowercase letter")
+    .matches(/[A-ZÇÖŞÜĞİ]+/, "Password must contain one uppercase letter")
+    .matches(
+      /[!/[@$!%*?&]+/,
+      "The password must contain at least one special character (!/[@$!%*?&)."
+    ),
 });
 
 const RegisterForm = ({
