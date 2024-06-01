@@ -7,6 +7,7 @@ import {
   getSingleBlogSuccess,
   likeSuccess,
   getCommentsSuccess,
+  getCategoriesSuccess,
   fetchFail,
   getPaginatedBlogsSuccess,
 } from "../features/blogSlice";
@@ -164,6 +165,32 @@ const useBlogCalls = () => {
     }
   };
 
+  //!---------------Get categories---------------
+  const getCategories = async () => {
+    dispatch(fetchStart());
+    try {
+      const { data } = await axiosToken.get("/categories/");
+      // console.log(data);
+      dispatch(getCategoriesSuccess(data));
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify("Oops! there is something wrong for categories!");
+    }
+  };
+
+  //!---------------Create categories---------------
+  const createCategory = async (newCategory) => {
+    dispatch(fetchStart());
+    try {
+      await axiosToken.post("/categories/", newCategory);
+      toastSuccessNotify("Category was added successfully!");
+      await getCategories();
+    } catch (error) {
+      dispatch(fetchFail());
+      toastErrorNotify("Oops! there is something wrong while adding category!");
+    }
+  };
+
   //!-------------Veri silme işlemi---------------------
   const deleteBlog = async (endpoint, id) => {
     dispatch(fetchStart());
@@ -173,9 +200,7 @@ const useBlogCalls = () => {
       getBlogs(endpoint);
     } catch (error) {
       dispatch(fetchFail());
-      toastErrorNotify(
-        `Oops! there is something wrong while deleting!`
-      );
+      toastErrorNotify(`Oops! there is something wrong while deleting!`);
     }
   };
 
@@ -234,6 +259,8 @@ const useBlogCalls = () => {
     updateComment,
     deleteComment,
     createComment,
+    getCategories,
+    createCategory,
     promiseAllBlogs,
     deleteBlog,
   };

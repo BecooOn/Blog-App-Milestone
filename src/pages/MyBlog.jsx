@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SkeletonCard from "../components/skeleton/SkeletonCard";
 import { NoBlogMessage, NoDataMessage } from "../components/DataFetchMessages";
 import { btnStyle } from "../styles/globalStyles";
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 export default function MyBlog() {
   const { _id, loading, error } = useSelector((state) => state.auth || {});
@@ -33,6 +33,11 @@ export default function MyBlog() {
     getMyBlogs(_id); //? Kullanıcı _id'sine göre bloglar almak için
   }, []);
 
+  //! Sort ile createAt e göre en yeni blog en başta olacak şekilde ayarladım.
+  const sortedBlogs = [...myBlogs].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   //? pagination işlemi
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -40,7 +45,10 @@ export default function MyBlog() {
 
   //? Mevcut sayfadaki blogları göstermek için slice
   const startIndex = (page - 1) * itemsPerPage;
-  const selectedBlogs = myBlogs.slice(startIndex, startIndex + itemsPerPage);
+  const selectedBlogs = sortedBlogs.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   const handleLikes = async (itemId) => {
     await postLike(itemId);
@@ -50,12 +58,9 @@ export default function MyBlog() {
 
   return (
     <>
-    <Helmet>
+      <Helmet>
         <title>Blogla-Bakalim-My-Blog</title>
-        <meta
-          name="description"
-          content="Blogla-Bakalim benim bloglarim."
-        />
+        <meta name="description" content="Blogla-Bakalim benim bloglarim." />
       </Helmet>
       {loading ? (
         <SkeletonCard />
@@ -74,7 +79,7 @@ export default function MyBlog() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            flexDirection: "column"
+            flexDirection: "column",
           }}
         >
           <NoBlogMessage />

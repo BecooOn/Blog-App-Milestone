@@ -8,7 +8,7 @@ const initialState = {
   users: [],
   singleBlog: [],
   myBlogs: [],
-  likes:[],
+  likes: [],
   loading: false,
   error: false,
 };
@@ -36,13 +36,18 @@ const getBlogSlice = createSlice({
       state.singleBlog = payload.data;
     },
 
-    likeSuccess:(state,{payload}) =>{
+    likeSuccess: (state, { payload }) => {
       state.loading = false;
       state.likes = payload;
     },
     getCommentsSuccess: (state, { payload }) => {
       state.loading = false;
       state.comments = payload.data;
+    },
+    getCategoriesSuccess: (state, { payload }) => {
+      // console.log(payload.data);
+      state.loading = false;
+      state.categories = payload.data;
     },
     promiseAllBlogsSuccess: (
       state,
@@ -69,6 +74,7 @@ export const {
   getSingleBlogSuccess,
   likeSuccess,
   getCommentsSuccess,
+  getCategoriesSuccess,
   fetchFail,
 } = getBlogSlice.actions;
 export default getBlogSlice.reducer;

@@ -77,6 +77,11 @@ export default function Card({ page, setPage }) {
     }
   };
 
+  //!slice kullanmamın nedeni, orijinal paginatedBlogs.data dizisini değiştirmeden, sıralama işlemi için bir kopya oluşturmaktır
+  const sortedBlogs = paginatedBlogs?.data?.slice().sort((a, b) => {
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
   return (
     <>
       {loading ? (
@@ -116,7 +121,7 @@ export default function Card({ page, setPage }) {
                   bgcolor: "background.paper",
                 }}
               >
-                {paginatedBlogs?.data?.map((item) => (
+                {sortedBlogs?.map((item) => (
                   <React.Fragment key={item._id}>
                     <ListItem
                       sx={{

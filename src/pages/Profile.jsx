@@ -66,7 +66,7 @@ export default function Profile() {
       image: image || "",
       username: username || "",
       email: email || "",
-      password: password || "",
+      password: "", //? password alanının boş açılması için
       firstName: firstName || "",
       lastName: lastName || "",
       city: city || "",
@@ -75,7 +75,11 @@ export default function Profile() {
   }, [image, username, email, password, firstName, lastName, city, bio]);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setShowCheckPassW(false);
+    setCheckPassW("");
+  };
 
   const handleClickShowCheckPassW = () => {
     setShowCheckPassW(!showCheckPassW);
@@ -85,8 +89,8 @@ export default function Profile() {
     setCheckPassW(value);
   };
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (checkPassW === info.password) {
-      e.preventDefault();
       await updateUser(_id, info);
       setOpen(false);
       setCheckPassW("");
