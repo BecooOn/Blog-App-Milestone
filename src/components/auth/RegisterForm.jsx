@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -43,12 +43,20 @@ const RegisterForm = ({
   touched,
   handleBlur,
   isSubmitting,
+  showPassword,
+  handleClickShowPassword,
+  showCheckPassW,
+  handleClickShowCheckPassW,
+  checkPassW,
+  handleChangeCheckPassW,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
+  const checkPassWRef = useRef(null);
+  //? checkPassW için inputRef prop'unu kullanarak useEffect ile her render işleminden sonra input alanına odaklanmayı sağlayabilmek için bu işelmi yaptım.
+  useEffect(() => {
+    if (checkPassWRef.current) {
+      checkPassWRef.current.focus();
+    }
+  }, [checkPassWRef]);
   return (
     <Form>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -128,7 +136,7 @@ const RegisterForm = ({
           onChange={handleChange}
         />
         <TextField
-          label="password *"
+          label="Password *"
           name="password"
           id="password"
           type={showPassword ? "text" : "password"}
@@ -148,6 +156,26 @@ const RegisterForm = ({
             ),
           }}
         />
+       <TextField
+        label="Password Validation *"
+        name="checkPassW"
+        id="checkPassW"
+        type={showCheckPassW ? "text" : "password"}
+        variant="outlined"
+        value={checkPassW}
+        onChange={(e) => handleChangeCheckPassW(e.target.value)}
+        inputRef={checkPassWRef} // inputRef prop'u ekleniyor
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleClickShowCheckPassW} edge="end">
+                {showCheckPassW ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+
         <Button
           type="submit"
           variant="contained"
