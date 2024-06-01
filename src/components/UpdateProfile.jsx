@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -9,7 +9,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import CloseIcon from "@mui/icons-material/Close";
-import {toastWarnNotify} from "../helper/ToastNotify"
+import { toastWarnNotify } from "../helper/ToastNotify";
 
 const style = {
   position: "absolute",
@@ -45,16 +45,30 @@ export default function UpdateProfile({
   handleSubmit,
   open,
   handleOpen,
-  handleClose
+  handleClose,
+  showCheckPassW,
+  handleClickShowCheckPassW,
+  checkPassW,
+  handleChangeCheckPassW,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      toastWarnNotify("Please note that password is required for making changes.");
+      toastWarnNotify(
+        "Please note that password is required for making changes."
+      );
     }, 200);
     return () => clearTimeout(timeout);
   }, []);
+
+  const checkPassWRef = useRef(null);
+  //? checkPassW için inputRef prop'unu kullanarak useEffect ile her render işleminden sonra input alanına odaklanmayı sağlayabilmek için bu işelmi yaptım.
+  useEffect(() => {
+    if (checkPassWRef.current) {
+      checkPassWRef.current.focus();
+    }
+  }, [checkPassWRef]);
 
   const handleChange = (e) => {
     setInfo({ ...info, [e.target.name]: e.target.value });
@@ -178,6 +192,28 @@ export default function UpdateProfile({
                     <InputAdornment position="end">
                       <IconButton onClick={handleClickShowPassword} edge="end">
                         {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                label="Password Validation *"
+                name="checkPassW"
+                id="checkPassW"
+                type={showCheckPassW ? "text" : "password"}
+                variant="outlined"
+                value={checkPassW}
+                onChange={(e) => handleChangeCheckPassW(e.target.value)}
+                inputRef={checkPassWRef}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handleClickShowCheckPassW}
+                        edge="end"
+                      >
+                        {showCheckPassW ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   ),

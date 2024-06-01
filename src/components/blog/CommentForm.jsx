@@ -67,7 +67,7 @@ const CommentForm = ({ id }) => {
           comment: "",
         });
       } catch (error) {
-        console.error("Error updating comment: ", error);
+        // console.error("Error updating comment: ", error);
         // Handle error
       }
     }

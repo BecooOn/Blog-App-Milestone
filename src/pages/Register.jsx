@@ -33,7 +33,6 @@ const Register = () => {
   const handleChangeCheckPassW = (value) => {
     setCheckPassW(value);
   };
-  console.log(checkPassW);
 
   const handleRegister = async (values, actions) => {
     if (checkPassW === values.password) {

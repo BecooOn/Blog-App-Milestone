@@ -11,10 +11,13 @@ import UpdateProfile from "../components/UpdateProfile";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet-async";
 import { btnStyle } from "../styles/globalStyles";
+import { toastErrorNotify } from "../helper/ToastNotify";
 
 export default function Profile() {
   const [open, setOpen] = useState(false);
   const { singleUser } = useSelector((state) => state.auth);
+  const [checkPassW, setCheckPassW] = useState("");
+  const [showCheckPassW, setShowCheckPassW] = useState(false);
   const {
     username,
     email,
@@ -55,9 +58,9 @@ export default function Profile() {
         });
       }
     };
-
     fetchUser();
   }, []);
+
   useEffect(() => {
     setInfo({
       image: image || "",
@@ -73,10 +76,23 @@ export default function Profile() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleClickShowCheckPassW = () => {
+    setShowCheckPassW(!showCheckPassW);
+  };
+
+  const handleChangeCheckPassW = (value) => {
+    setCheckPassW(value);
+  };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    await updateUser(_id, info);
-    setOpen(false);
+    if (checkPassW === info.password) {
+      e.preventDefault();
+      await updateUser(_id, info);
+      setOpen(false);
+      setCheckPassW("");
+    } else {
+      toastErrorNotify("Passwords do not match");
+    }
   };
   const handleDeleteUser = () => {
     Swal.fire({
@@ -96,6 +112,7 @@ export default function Profile() {
       }
     });
   };
+
   return (
     <>
       <Helmet>
@@ -162,6 +179,10 @@ export default function Profile() {
                 setOpen={setOpen}
                 handleOpen={handleOpen}
                 handleClose={handleClose}
+                checkPassW={checkPassW}
+                handleChangeCheckPassW={handleChangeCheckPassW}
+                showCheckPassW={showCheckPassW}
+                handleClickShowCheckPassW={handleClickShowCheckPassW}
               />
             )}
             <Button
