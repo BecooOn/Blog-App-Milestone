@@ -57,7 +57,7 @@ const useAuthCalls = () => {
     } catch (error) {
       toastErrorNotify("Sign up failed!");
       dispatch(fetchFail());
-      console.error(error)
+      // console.error(error)
     }
   };
 

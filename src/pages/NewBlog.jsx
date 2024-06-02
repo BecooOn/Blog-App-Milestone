@@ -28,7 +28,7 @@ const NewBlog = () => {
   });
   const { categories } = useSelector((state) => state.blog);
   const { getBlogs, createBlog } = useBlogCalls();
-  console.log(categories);
+  // console.log(categories);
   const navigate = useNavigate();
   useEffect(() => {
     getBlogs("categories");
@@ -36,8 +36,7 @@ const NewBlog = () => {
 
   //! categories dizisini sıralarken localeCompare kullanarak isimlerine göre sıralamak için
   const sortedCategories = [...categories].sort((a, b) => a.name.localeCompare(b.name));
-
-  console.log(sortedCategories);
+  // console.log(sortedCategories);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

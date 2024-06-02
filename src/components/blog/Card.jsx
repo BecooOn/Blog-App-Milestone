@@ -16,29 +16,14 @@ import { useSelector } from "react-redux";
 import useBlogCalls from "../../hooks/useBlogCalls";
 import { btnStyle } from "../../styles/globalStyles";
 import { useNavigate } from "react-router-dom";
-import SkeletonCard from "../skeleton/SkeletonCard";
+import loadingGIF from "../../assets/loading.gif";
 
 export default function Card({ page, setPage }) {
-  const {
-    username,
-    email,
-    firstName,
-    lastName,
-    image,
-    city,
-    bio,
-    _id,
-    loading,
-    error,
-  } = useSelector((state) => state.auth);
-  const {
-    getPaginatedBlogs,
-    postLike,
-    getLike,
-    getSingleBlog,
-    promiseAllBlogs,
-  } = useBlogCalls();
-  const { paginatedBlogs } = useSelector((state) => state.blog);
+  const { username, email, firstName, lastName, image, city, bio, _id } =
+    useSelector((state) => state.auth);
+  const { getPaginatedBlogs, postLike, getLike, promiseAllBlogs } =
+    useBlogCalls();
+  const { paginatedBlogs, loading } = useSelector((state) => state.blog);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,7 +70,18 @@ export default function Card({ page, setPage }) {
   return (
     <>
       {loading ? (
-        <SkeletonCard />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "50vh",
+          }}
+        >
+          <Typography>Loading...</Typography>
+          <img src={loadingGIF} alt="loading..." width="80px" />
+        </Box>
       ) : (
         <Box
           sx={{
@@ -139,14 +135,16 @@ export default function Card({ page, setPage }) {
                         position: "relative",
                       }}
                     >
-                      <Box sx={{ m: 2 }}>
+                       <Box sx={{ m: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <img
                           src={item.image}
                           alt=""
                           style={{ width: "200px" }}
                         />
+                        <Typography component="span" sx={{fontSize:"8px"}}>
+                          Published: {new Date(item.createdAt).toLocaleDateString('en-CA')}
+                        </Typography>
                       </Box>
-
                       <Box sx={{ flex: 1, ml: { sm: 2 } }}>
                         <ListItemText
                           primary={

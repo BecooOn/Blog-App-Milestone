@@ -76,6 +76,7 @@ SOLUTION
 |    ├── assets
 |    │   ├── 404.png
 |    │   ├── blog-app.gif
+|    │   ├── loading.gif
 |    │   └── logo.png
 |    ├── components
 |    │   ├── auth

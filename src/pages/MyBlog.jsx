@@ -126,12 +126,15 @@ export default function MyBlog() {
                         flexDirection: { xs: "column", sm: "row" },
                       }}
                     >
-                      <Box sx={{ m: 2, display: "flex", alignItems: "center" }}>
+                      <Box sx={{ m: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <img
                           src={item.image}
                           alt=""
-                          style={{ width: "200px", marginRight: "20px" }}
+                          style={{ width: "200px" }}
                         />
+                        <Typography component="span" sx={{fontSize:"8px"}}>
+                        {item.isPublish ? "Published" : "Drafted"} {new Date(item.createdAt).toLocaleDateString('en-CA')}
+                        </Typography>
                       </Box>
 
                       <ListItemText

@@ -1,61 +1,77 @@
-import React from 'react';
-import { Box, Grid, Skeleton, List, ListItem, Divider, ListItemText, Typography, IconButton, Button, Pagination } from '@mui/material';
-import { ThumbUpAlt as ThumbUpAltIcon, Comment as CommentIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
+import React from "react";
+import {
+  Box,
+  Grid,
+  Skeleton,
+  List,
+  ListItem,
+  Divider,
+  ListItemText,
+  Typography,
+  IconButton,
+  Button,
+  Pagination,
+} from "@mui/material";
+import {
+  ThumbUpAlt as ThumbUpAltIcon,
+  Comment as CommentIcon,
+  Visibility as VisibilityIcon,
+} from "@mui/icons-material";
 
 export default function SkeletonCard({ page, setPage }) {
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        marginBottom: '24px',
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        marginBottom: "24px",
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
         <Grid
           item
           xs={12}
           sm={9}
           order={{ xs: 2, sm: 1 }}
           sx={{
-            width: { xs: '100vw', sm: '100vw', md: '50vw' },
-            borderTop: '1px solid gray',
-            borderRight: '1px solid gray',
-            borderLeft: '1px solid gray',
-            borderBottom: 'none',
+            width: { xs: "100vw", sm: "100vw", md: "50vw" },
+            borderTop: "1px solid gray",
+            borderRight: "1px solid gray",
+            borderLeft: "1px solid gray",
+            borderBottom: "none",
             p: 3,
-            height: '800px',
-            overflowY: 'scroll',
-            '&::-webkit-scrollbar': { width: '0px' },
-            textAlign: { xs: 'center', sm: 'left' },
-            display: 'flex',
-            justifyContent: 'center',
+            height: "800px",
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": { width: "0px" },
+            textAlign: { xs: "center", sm: "left" },
+            display: "flex",
+            justifyContent: "center",
           }}
         >
           <List
             sx={{
-              width: '100%',
+              width: "100%",
               maxWidth: 700,
-              bgcolor: 'background.paper',
+              bgcolor: "background.paper",
             }}
           >
             {Array.from(new Array(3)).map((_, index) => (
               <React.Fragment key={index}>
                 <ListItem
                   sx={{
-                    display: 'flex',
+                    display: "flex",
                     justifyContent: {
-                      xs: 'center',
-                      sm: 'flex-start',
+                      xs: "center",
+                      sm: "flex-start",
                     },
-                    alignItems: 'center',
+                    alignItems: "center",
                     flexDirection: {
-                      xs: 'column',
-                      sm: 'row',
+                      xs: "column",
+                      sm: "row",
                     },
-                    textAlign: { xs: 'center', sm: 'left' },
-                    position: 'relative',
+                    textAlign: { xs: "center", sm: "left" },
+                    position: "relative",
                   }}
                 >
                   <Box sx={{ m: 2 }}>
@@ -65,7 +81,10 @@ export default function SkeletonCard({ page, setPage }) {
                   <Box sx={{ flex: 1, ml: { sm: 2 } }}>
                     <ListItemText
                       primary={
-                        <Typography variant="h6" sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ textAlign: { xs: "center", sm: "left" } }}
+                        >
                           <Skeleton width="80%" />
                         </Typography>
                       }
@@ -75,25 +94,32 @@ export default function SkeletonCard({ page, setPage }) {
                             <Skeleton />
                             <Skeleton width="60%" />
                           </Typography>
-                          <Box my={2} sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
-                            <Button variant="contained" color="secondary" disabled>
+                          <Box
+                            my={2}
+                            sx={{ textAlign: { xs: "center", sm: "left" } }}
+                          >
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              disabled
+                            >
                               <Skeleton width={80} />
                             </Button>
                           </Box>
                           <Box
                             sx={{
-                              display: 'flex',
-                              alignItems: 'center',
+                              display: "flex",
+                              alignItems: "center",
                               justifyContent: {
-                                xs: 'center',
-                                sm: 'flex-start',
+                                xs: "center",
+                                sm: "flex-start",
                               },
                               gap: 3,
                               my: 2,
-                              position: { sm: 'absolute' },
+                              position: { sm: "absolute" },
                               bottom: { sm: 0 },
                               right: { sm: 0 },
-                              textAlign: { xs: 'center', sm: 'left' },
+                              textAlign: { xs: "center", sm: "left" },
                             }}
                           >
                             <Box>
@@ -119,39 +145,21 @@ export default function SkeletonCard({ page, setPage }) {
             ))}
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
+                display: "flex",
+                justifyContent: "center",
                 m: 4,
               }}
             >
-              <Pagination count={0} page={page} onChange={(_, value) => setPage(value)} variant="outlined" color="primary" />
+              <Pagination
+                count={0}
+                page={page}
+                onChange={(_, value) => setPage(value)}
+                variant="outlined"
+                color="primary"
+              />
             </Box>
           </List>
         </Grid>
-        {/* <Grid
-          item
-          xs={12}
-          sm={3}
-          order={{ xs: 1, sm: 2 }}
-          sx={{ textAlign: { xs: 'center', sm: 'left' } }}
-        >
-          <ListItem sx={{ display: 'block' }}>
-            <Box sx={{ textAlign: 'center' }}>
-              <Skeleton variant="circular" width={70} height={70} />
-            </Box>
-            <ListItemText
-              primary={<Skeleton width="60%" />}
-              secondary={
-                <Box>
-                  <Typography><Skeleton width="40%" /></Typography>
-                  <Typography><Skeleton width="50%" /></Typography>
-                  <Typography><Skeleton width="30%" /></Typography>
-                  <Typography><Skeleton width="70%" /></Typography>
-                </Box>
-              }
-            />
-          </ListItem>
-        </Grid> */}
       </Box>
     </Box>
   );
